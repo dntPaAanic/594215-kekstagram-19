@@ -151,4 +151,35 @@ var defaultScaleValue = function () {
 
 defaultScaleValue();
 
+var onSmallerControlPush = function () {
+  if (scaleControlValueNumber > IMAGE_MIN_SIZE && scaleControlValueNumber <= IMAGE_MAX_SIZE) {
+    scaleControlValueNumber -= RESIZE_STEP;
+    scaleControlValue.value = scaleControlValueNumber + '%';
+  }
+};
+
+var onBiggerControlPush = function () {
+  if (scaleControlValueNumber >= IMAGE_MIN_SIZE && scaleControlValueNumber < IMAGE_MAX_SIZE) {
+    scaleControlValueNumber += RESIZE_STEP;
+    scaleControlValue.value = scaleControlValueNumber + '%';
+  }
+};
+
+var resize = function () {
+  imgUploadPreview.children[0].style.transform = 'scale(' + scaleControlValueNumber / 100 + ')';
+
+};
+
+var getBiggerPhoto = function () {
+  onBiggerControlPush();
+  resize();
+};
+
+var getSmallerPhoto = function () {
+  onSmallerControlPush();
+  resize();
+};
+
+scaleControlSmaller.addEventListener('click', getSmallerPhoto);
+scaleControlBigger.addEventListener('click', getBiggerPhoto);
 
