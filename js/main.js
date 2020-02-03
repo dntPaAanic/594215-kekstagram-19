@@ -38,8 +38,8 @@ var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getRandomArrElement = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+var getRandomArrElement = function (array) {
+  return array[Math.floor(Math.random() * array.length)];
 };
 
 var getRandomComment = function () {
@@ -60,16 +60,16 @@ var getCommentsList = function (commentsCount) {
 };
 
 var getPictureList = function (pictureCount) {
-  var arr = [];
+  var array = [];
   for (var i = 1; i <= pictureCount; i++) {
-    arr.push({
+    array.push({
       url: 'photos/' + i + '.jpg',
       description: 'Описание фотографии - ' + i,
       likes: getRandomNumber(LIKE_COUNT_MIN, LIKE_COUNT_MAX),
       comments: getCommentsList(getRandomNumber(1, 2))
     });
   }
-  return arr;
+  return array;
 };
 
 var makePicture = function (pictureItem) {
@@ -95,3 +95,60 @@ var createPictureList = function (photosArray) {
 var completedPhotoList = getPictureList(PICTURE_COUNT);
 
 pictureList.appendChild(createPictureList(completedPhotoList));
+
+
+// Лекция 4
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
+
+// Открытие/закрытие окна редактирования фото
+var imgUploadForm = document.querySelector('.img-upload__form');
+var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+var imgUploadButton = imgUploadForm.querySelector('#upload-file');
+var closeEditButton = imgUploadForm.querySelector('#upload-cancel');
+
+var onEditFormEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closeEditForm();
+  }
+};
+
+var openEditForm = function () {
+  imgUploadOverlay.classList.remove('hidden');
+  closeEditButton.addEventListener('click', closeEditForm);
+  document.addEventListener('keydown', onEditFormEscPress);
+};
+
+var closeEditForm = function () {
+  imgUploadForm.reset();
+  imgUploadOverlay.classList.add('hidden');
+  document.addEventListener('keydown', onEditFormEscPress);
+};
+
+imgUploadButton.addEventListener('change', openEditForm);
+//
+
+
+// Масштаб изображения
+var RESIZE_STEP = 25;
+var IMAGE_MIN_SIZE = 25;
+var IMAGE_MAX_SIZE = 100;
+var IMAGE_DEFAULT_SIZE = 100;
+
+var scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
+
+var scaleControlSmaller = document.querySelector('.scale__control--smaller');
+var scaleControlBigger = document.querySelector('.scale__control--bigger');
+var scaleControlValue = document.querySelector('.scale__control--value');
+var imgUploadPreview = document.querySelector('.img-upload__preview');
+
+
+// показываем дефолтный масштаб при открытии формы редактирования фото
+var defaultScaleValue = function () {
+  scaleControlValue.value = IMAGE_DEFAULT_SIZE + '%';
+};
+
+defaultScaleValue();
+
+
