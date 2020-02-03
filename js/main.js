@@ -144,13 +144,14 @@ var scaleControlValue = document.querySelector('.scale__control--value');
 var imgUploadPreview = document.querySelector('.img-upload__preview');
 
 
-// показываем дефолтный масштаб при открытии формы редактирования фото
+// Показываем дефолтный масштаб при открытии формы редактирования фото
 var defaultScaleValue = function () {
   scaleControlValue.value = IMAGE_DEFAULT_SIZE + '%';
 };
 
 defaultScaleValue();
 
+// Расчет уменьшения масштаба изображения
 var onSmallerControlPush = function () {
   if (scaleControlValueNumber > IMAGE_MIN_SIZE && scaleControlValueNumber <= IMAGE_MAX_SIZE) {
     scaleControlValueNumber -= RESIZE_STEP;
@@ -158,6 +159,7 @@ var onSmallerControlPush = function () {
   }
 };
 
+// Расчет увеличения масштаба изображения
 var onBiggerControlPush = function () {
   if (scaleControlValueNumber >= IMAGE_MIN_SIZE && scaleControlValueNumber < IMAGE_MAX_SIZE) {
     scaleControlValueNumber += RESIZE_STEP;
@@ -165,9 +167,9 @@ var onBiggerControlPush = function () {
   }
 };
 
+// Присваивание стиля фотографии
 var resize = function () {
   imgUploadPreview.children[0].style.transform = 'scale(' + scaleControlValueNumber / 100 + ')';
-
 };
 
 var getBiggerPhoto = function () {
@@ -183,3 +185,17 @@ var getSmallerPhoto = function () {
 scaleControlSmaller.addEventListener('click', getSmallerPhoto);
 scaleControlBigger.addEventListener('click', getBiggerPhoto);
 
+
+
+// Фильтры
+// применение фильтров
+var uploadPhoto = document.querySelector('.img-upload__preview img');
+var effectsLabels = document.querySelectorAll('.effects__label');
+
+var FilterDefault = {
+  chrome: 1,
+  sepia: 1,
+  marvin: 100,
+  phobos: 3,
+  heat: 3
+};
