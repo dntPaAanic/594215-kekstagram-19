@@ -99,7 +99,7 @@ pictureList.appendChild(createPictureList(completedPhotoList));
 
 // Лекция 4
 var ESC_KEY = 'Escape';
-var ENTER_KEY = 'Enter';
+// var ENTER_KEY = 'Enter';
 
 
 // Открытие/закрытие окна редактирования фото
@@ -124,6 +124,7 @@ var closeEditForm = function () {
   imgUploadForm.reset();
   imgUploadOverlay.classList.add('hidden');
   document.addEventListener('keydown', onEditFormEscPress);
+  resetFilter();
 };
 
 imgUploadButton.addEventListener('change', openEditForm);
@@ -186,16 +187,100 @@ scaleControlSmaller.addEventListener('click', getSmallerPhoto);
 scaleControlBigger.addEventListener('click', getBiggerPhoto);
 
 
-
 // Фильтры
-// применение фильтров
-var uploadPhoto = document.querySelector('.img-upload__preview img');
-var effectsLabels = document.querySelectorAll('.effects__label');
+var MAX_BLUR = 3;
+var MAX_BRIGHTNESS = 3;
+var MIN_BRIGHTNESS = 1;
+var DEFAULT_EFFECT_FILTER_LEVEL = 100;
 
-var FilterDefault = {
-  chrome: 1,
-  sepia: 1,
-  marvin: 100,
-  phobos: 3,
-  heat: 3
+
+var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
+var effectLevelInput = effectController.querySelector('.effect-level__value');
+var effectLevelLine = effectController.querySelector('.effect-level__line');
+var effectLevelBar = effectController.querySelector('.effect-level__depth');
+var effectLevelPin = effectController.querySelector('.effect-level__pin');
+var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
+var currentFilter;
+
+// Показ/скрытие полоски фильтра
+var toggleEffectVisibility = function (filter) {
+  if (filter === 'none') {
+    effectController.classList.add('hidden');
+  } else {
+    effectController.classList.remove('hidden');
+  }
 };
+
+// Устанавливает положение фильтра
+var setEffectLevel = function (level) {
+  effectLevelInput.value = level;
+  effectLevelBar.style.width = level + '%';
+  effectLevelPin.style.left = level + '%';
+};
+
+var getCurrentFilter = function () {
+  return imgUploadOverlay.querySelector('.effects__radio:checked').value;
+};
+
+var applyFilter = function (filter) {
+  imgUploadPreview.classList.add('effects__preview--' + filter);
+};
+
+// Показывает интенсивность фильтра в зависимости от положения ползунка
+var setEffect = function (filter, level) {
+  var filterEffect = '';
+
+  switch (filter) {
+    case 'chrome':
+      filterEffect = 'grayscale(' + level / 100 + ')';
+      break;
+
+    case 'sepia':
+      filterEffect = 'sepia(' + level / 100 + ')';
+      break;
+
+    case 'marvin':
+      filterEffect = 'invert(' + level + '%)';
+      break;
+
+    case 'phobos':
+      filterEffect = 'blur(' + (level / 100 * MAX_BLUR) + 'px)';
+      break;
+
+    case 'heat':
+      filterEffect = 'brightness(' + (MIN_BRIGHTNESS + level / 100 * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + ')';
+      break;
+
+    default:
+      filterEffect = 'none';
+  }
+
+  imgUploadPreview.style.filter = filterEffect;
+};
+
+var resetFilter = function () {
+  imgUploadPreview.classList.remove('effects__preview--' + currentFilter);
+  imgUploadPreview.style = '';
+};
+
+var toggleFilter = function () {
+  resetFilter();
+  currentFilter = getCurrentFilter();
+  toggleEffectVisibility(currentFilter);
+  setEffectLevel(DEFAULT_EFFECT_FILTER_LEVEL);
+  applyFilter(currentFilter);
+};
+
+for (var i = 0; i < filters.length; i++) {
+  filters[i].addEventListener('input', toggleFilter);
+  toggleFilter();
+}
+
+// Применяет эффект после установки ползунка
+var onPinMouseUp = function () {
+  var effectLevel = Math.round((effectLevelPin.offsetLeft / effectLevelLine.offsetWidth) * 100);
+  setEffectLevel(effectLevel);
+  setEffect(getCurrentFilter(), effectLevel);
+};
+
+effectLevelPin.addEventListener('mouseup', onPinMouseUp);
