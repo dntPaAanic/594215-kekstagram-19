@@ -118,6 +118,7 @@ var openEditForm = function () {
   imgUploadOverlay.classList.remove('hidden');
   closeEditButton.addEventListener('click', closeEditForm);
   document.addEventListener('keydown', onEditFormEscPress);
+  defaultScaleValue();
 };
 
 var closeEditForm = function () {
@@ -148,9 +149,9 @@ var imgUploadPreview = document.querySelector('.img-upload__preview');
 // Показываем дефолтный масштаб при открытии формы редактирования фото
 var defaultScaleValue = function () {
   scaleControlValue.value = IMAGE_DEFAULT_SIZE + '%';
+  imgUploadPreview.children[0].style.transform = 'scale(' + IMAGE_DEFAULT_SIZE / 100 + ')';
+  scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
 };
-
-defaultScaleValue();
 
 // Расчет уменьшения масштаба изображения
 var onSmallerControlPush = function () {
