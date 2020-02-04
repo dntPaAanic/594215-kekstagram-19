@@ -224,7 +224,7 @@ var getCurrentFilter = function () {
 };
 
 var applyFilter = function (filter) {
-  imgUploadPreview.classList.add('effects__preview--' + filter);
+  imgUploadPreview.children[0].classList.add('effects__preview--' + filter);
 };
 
 // Показывает интенсивность фильтра в зависимости от положения ползунка
@@ -235,33 +235,28 @@ var setEffect = function (filter, level) {
     case 'chrome':
       filterEffect = 'grayscale(' + level / 100 + ')';
       break;
-
     case 'sepia':
       filterEffect = 'sepia(' + level / 100 + ')';
       break;
-
     case 'marvin':
       filterEffect = 'invert(' + level + '%)';
       break;
-
     case 'phobos':
       filterEffect = 'blur(' + (level / 100 * MAX_BLUR) + 'px)';
       break;
-
     case 'heat':
       filterEffect = 'brightness(' + (MIN_BRIGHTNESS + level / 100 * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + ')';
       break;
-
     default:
       filterEffect = 'none';
   }
 
-  imgUploadPreview.style.filter = filterEffect;
+  imgUploadPreview.children[0].style.filter = filterEffect;
 };
 
 var resetFilter = function () {
-  imgUploadPreview.classList.remove('effects__preview--' + currentFilter);
-  imgUploadPreview.style = '';
+  imgUploadPreview.children[0].classList.remove('effects__preview--' + currentFilter);
+  imgUploadPreview.children[0].style.filter = '';
 };
 
 var toggleFilter = function () {
@@ -285,3 +280,8 @@ var onPinMouseUp = function () {
 };
 
 effectLevelPin.addEventListener('mouseup', onPinMouseUp);
+
+
+// Хэштеги
+var hashtagInput = imgUploadOverlay.querySelector('.text__hashtags');
+var descriptionInput = imgUploadOverlay.querySelector('.text__description');
