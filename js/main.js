@@ -99,8 +99,6 @@ pictureList.appendChild(createPictureList(completedPhotoList));
 
 // Лекция 4
 var ESC_KEY = 'Escape';
-// var ENTER_KEY = 'Enter';
-
 
 // Открытие/закрытие окна редактирования фото
 var imgUploadForm = document.querySelector('.img-upload__form');
@@ -267,8 +265,8 @@ var toggleFilter = function () {
   applyFilter(currentFilter);
 };
 
-for (var i = 0; i < filters.length; i++) {
-  filters[i].addEventListener('input', toggleFilter);
+for (var indexFilter = 0; indexFilter < filters.length; indexFilter++) {
+  filters[indexFilter].addEventListener('input', toggleFilter);
   toggleFilter();
 }
 
@@ -283,5 +281,52 @@ effectLevelPin.addEventListener('mouseup', onPinMouseUp);
 
 
 // Хэштеги
+
 var hashtagInput = imgUploadOverlay.querySelector('.text__hashtags');
 var descriptionInput = imgUploadOverlay.querySelector('.text__description');
+
+var validateHashtags = function () {
+  var text = hashtagInput.value.toLowerCase();
+  var errorMessage = '';
+
+  if (text) {
+    var hashtags = text.split(' ');
+
+    if (hashtags.length > 5) {
+      errorMessage = 'Нельзя указывать больше пяти хэш-тегов';
+    } else {
+      for (var i = 0; i < hashtags.length; i++) {
+        var hashtag = hashtags[i];
+        var hashtagSymbol = hashtag.split('#');
+
+        if (hashtagSymbol.length > 2) {
+          errorMessage = 'Хэш-теги должны разделяться пробелами';
+        } else if (hashtag.indexOf('#') !== 0) {
+          errorMessage = 'Хэш-тег должен начинаться с символа #';
+        } else if (hashtag.length < 2) {
+          errorMessage = 'Хеш-тег не может состоять только из одной решётки';
+        } else if (hashtag.length > 20) {
+          errorMessage = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
+        } else if (hashtag.includes(hashtag[i])) {
+          errorMessage = 'Один и тот же хэш-тег не может быть использован дважды';
+        }
+      }
+    }
+  }
+
+  hashtagInput.setCustomValidity(errorMessage);
+};
+
+var onFieldFocus = function (evt) {
+  if (evt.key === ESC_KEY) {
+    evt.stopPropagation();
+  }
+};
+
+hashtagInput.addEventListener('input', function () {
+  validateHashtags();
+});
+
+hashtagInput.addEventListener('keydown', onFieldFocus);
+descriptionInput.addEventListener('keydown', onFieldFocus);
+
