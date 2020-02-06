@@ -30,6 +30,25 @@ var COMMENT_AUTHOR_NAMES = [
   'Robert Santiago'
 ];
 
+var MAX_BLUR = 3;
+var MAX_BRIGHTNESS = 3;
+var MIN_BRIGHTNESS = 1;
+var DEFAULT_EFFECT_FILTER_LEVEL = 100;
+
+var imgUploadForm = document.querySelector('.img-upload__form');
+var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+var imgUploadButton = imgUploadForm.querySelector('#upload-file');
+var closeEditButton = imgUploadForm.querySelector('#upload-cancel');
+
+
+var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
+var effectLevelInput = effectController.querySelector('.effect-level__value');
+var effectLevelLine = effectController.querySelector('.effect-level__line');
+var effectLevelBar = effectController.querySelector('.effect-level__depth');
+var effectLevelPin = effectController.querySelector('.effect-level__pin');
+var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
+var currentFilter;
+
 var templatePictureItem = document.querySelector('#picture').content.querySelector('.picture');
 var pictureList = document.querySelector('.pictures');
 
@@ -101,10 +120,7 @@ pictureList.appendChild(createPictureList(completedPhotoList));
 var ESC_KEY = 'Escape';
 
 // Открытие/закрытие окна редактирования фото
-var imgUploadForm = document.querySelector('.img-upload__form');
-var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
-var imgUploadButton = imgUploadForm.querySelector('#upload-file');
-var closeEditButton = imgUploadForm.querySelector('#upload-cancel');
+
 
 var onEditFormEscPress = function (evt) {
   if (evt.key === ESC_KEY) {
@@ -116,13 +132,15 @@ var openEditForm = function () {
   imgUploadOverlay.classList.remove('hidden');
   closeEditButton.addEventListener('click', closeEditForm);
   document.addEventListener('keydown', onEditFormEscPress);
+  effectController.classList.add('hidden');
   defaultScaleValue();
+
 };
 
 var closeEditForm = function () {
   imgUploadForm.reset();
   imgUploadOverlay.classList.add('hidden');
-  document.addEventListener('keydown', onEditFormEscPress);
+  document.removeEventListener('keydown', onEditFormEscPress);
   resetFilter();
 };
 
@@ -157,6 +175,7 @@ var onSmallerControlPush = function () {
     scaleControlValueNumber -= RESIZE_STEP;
     scaleControlValue.value = scaleControlValueNumber + '%';
   }
+  imgUploadPreview.children[0].style.transform = 'scale(' + scaleControlValueNumber / 100 + ')';
 };
 
 // Расчет увеличения масштаба изображения
@@ -165,41 +184,16 @@ var onBiggerControlPush = function () {
     scaleControlValueNumber += RESIZE_STEP;
     scaleControlValue.value = scaleControlValueNumber + '%';
   }
-};
-
-// Присваивание стиля фотографии
-var resize = function () {
   imgUploadPreview.children[0].style.transform = 'scale(' + scaleControlValueNumber / 100 + ')';
+
 };
 
-var getBiggerPhoto = function () {
-  onBiggerControlPush();
-  resize();
-};
-
-var getSmallerPhoto = function () {
-  onSmallerControlPush();
-  resize();
-};
-
-scaleControlSmaller.addEventListener('click', getSmallerPhoto);
-scaleControlBigger.addEventListener('click', getBiggerPhoto);
+scaleControlSmaller.addEventListener('click', onSmallerControlPush);
+scaleControlBigger.addEventListener('click', onBiggerControlPush);
 
 
 // Фильтры
-var MAX_BLUR = 3;
-var MAX_BRIGHTNESS = 3;
-var MIN_BRIGHTNESS = 1;
-var DEFAULT_EFFECT_FILTER_LEVEL = 100;
 
-
-var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
-var effectLevelInput = effectController.querySelector('.effect-level__value');
-var effectLevelLine = effectController.querySelector('.effect-level__line');
-var effectLevelBar = effectController.querySelector('.effect-level__depth');
-var effectLevelPin = effectController.querySelector('.effect-level__pin');
-var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
-var currentFilter;
 
 // Показ/скрытие полоски фильтра
 var toggleEffectVisibility = function (filter) {
@@ -257,7 +251,7 @@ var resetFilter = function () {
   imgUploadPreview.children[0].style.filter = '';
 };
 
-var toggleFilter = function () {
+var onFilterClick = function () {
   resetFilter();
   currentFilter = getCurrentFilter();
   toggleEffectVisibility(currentFilter);
@@ -266,8 +260,7 @@ var toggleFilter = function () {
 };
 
 for (var indexFilter = 0; indexFilter < filters.length; indexFilter++) {
-  filters[indexFilter].addEventListener('input', toggleFilter);
-  toggleFilter();
+  filters[indexFilter].addEventListener('input', onFilterClick);
 }
 
 // Применяет эффект после установки ползунка
