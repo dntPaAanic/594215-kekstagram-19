@@ -35,6 +35,10 @@ var MAX_BRIGHTNESS = 3;
 var MIN_BRIGHTNESS = 1;
 var DEFAULT_EFFECT_FILTER_LEVEL = 100;
 
+var HASHTAG_LIMIT = 5;
+var HASHTAG_MIN_LENGTH = 2;
+var HASHTAG_MAX_LENGTH = 20;
+
 var imgUploadForm = document.querySelector('.img-upload__form');
 var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
 var imgUploadButton = imgUploadForm.querySelector('#upload-file');
@@ -130,7 +134,7 @@ var onEditFormEscPress = function (evt) {
 
 var openEditForm = function () {
   imgUploadOverlay.classList.remove('hidden');
-  closeEditButton.addEventListener('click', closeEditForm);
+  closeEditButton.addEventListener('click', onCloseElementClick);
   document.addEventListener('keydown', onEditFormEscPress);
   effectController.classList.add('hidden');
   defaultScaleValue();
@@ -142,6 +146,10 @@ var closeEditForm = function () {
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onEditFormEscPress);
   resetFilter();
+};
+
+var onCloseElementClick = function () {
+  closeEditForm();
 };
 
 imgUploadButton.addEventListener('change', openEditForm);
@@ -193,8 +201,6 @@ scaleControlBigger.addEventListener('click', onBiggerControlPush);
 
 
 // Фильтры
-
-
 // Показ/скрытие полоски фильтра
 var toggleEffectVisibility = function (filter) {
   if (filter === 'none') {
@@ -279,31 +285,34 @@ var hashtagInput = imgUploadOverlay.querySelector('.text__hashtags');
 var descriptionInput = imgUploadOverlay.querySelector('.text__description');
 
 var validateHashtags = function () {
-  var text = hashtagInput.value.toLowerCase();
+  var hashtagValue = hashtagInput.value.toLowerCase();
   var errorMessage = '';
 
-  if (text) {
-    var hashtags = text.split(' ');
+  if (hashtagValue) {
+    var hashtags = hashtagValue.split(' ');
 
-    if (hashtags.length > 5) {
+    if (hashtags.length > HASHTAG_LIMIT) {
       errorMessage = 'Нельзя указывать больше пяти хэш-тегов';
     } else {
-      for (var i = 0; i < hashtags.length; i++) {
-        var hashtag = hashtags[i];
+      hashtags.forEach(function (hashtag, i) {
         var hashtagSymbol = hashtag.split('#');
 
         if (hashtagSymbol.length > 2) {
           errorMessage = 'Хэш-теги должны разделяться пробелами';
         } else if (hashtag.indexOf('#') !== 0) {
           errorMessage = 'Хэш-тег должен начинаться с символа #';
-        } else if (hashtag.length < 2) {
+        } else if (hashtag.length < HASHTAG_MIN_LENGTH) {
           errorMessage = 'Хеш-тег не может состоять только из одной решётки';
-        } else if (hashtag.length > 20) {
+        } else if (hashtag.length > HASHTAG_MAX_LENGTH) {
           errorMessage = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
-        } else if (hashtag.includes(hashtag[i])) {
-          errorMessage = 'Один и тот же хэш-тег не может быть использован дважды';
+        } else {
+          for (var j = i + 1; j < hashtags.length; j++) {
+            if (hashtags[j] === hashtags[i]) {
+              errorMessage = 'Один и тот же хэш-тег не может быть использован дважды';
+            }
+          }
         }
-      }
+      });
     }
   }
 
@@ -312,6 +321,7 @@ var validateHashtags = function () {
 
 var onFieldFocus = function (evt) {
   if (evt.key === ESC_KEY) {
+    // Потеря фокуса при нажатии ESC в тектовом поле
     evt.stopPropagation();
   }
 };
