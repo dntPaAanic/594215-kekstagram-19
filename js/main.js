@@ -30,6 +30,16 @@ var COMMENT_AUTHOR_NAMES = [
   'Robert Santiago'
 ];
 
+var ESC_KEY = 'Escape';
+
+var Effect = {
+  CHROME: 'chrome',
+  SEPIA: 'sepia',
+  MARVIN: 'marvin',
+  PHOBOS: 'phobos',
+  HEAT: 'heat'
+};
+
 var MAX_BLUR = 3;
 var MAX_BRIGHTNESS = 3;
 var MIN_BRIGHTNESS = 1;
@@ -121,21 +131,24 @@ pictureList.appendChild(createPictureList(completedPhotoList));
 
 
 // Лекция 4
-var ESC_KEY = 'Escape';
-
 // Открытие/закрытие окна редактирования фото
 
-
-var onEditFormEscPress = function (evt) {
+var onEscPress = function (evt) {
   if (evt.key === ESC_KEY) {
-    closeEditForm();
+    if (evt.target.classList.contains('text__hashtags') || evt.target.tagName === 'TEXTAREA') {
+      // Из предварительных материалов, я так понимаю, это все превратится в коллбэки и выглядеть будет красиво
+      evt.stopPropagation();
+      evt.target.blur();
+    } else {
+      closeEditForm();
+    }
   }
 };
 
 var openEditForm = function () {
   imgUploadOverlay.classList.remove('hidden');
   closeEditButton.addEventListener('click', onCloseElementClick);
-  document.addEventListener('keydown', onEditFormEscPress);
+  document.addEventListener('keydown', onEscPress);
   effectController.classList.add('hidden');
   defaultScaleValue();
 
@@ -144,7 +157,7 @@ var openEditForm = function () {
 var closeEditForm = function () {
   imgUploadForm.reset();
   imgUploadOverlay.classList.add('hidden');
-  document.removeEventListener('keydown', onEditFormEscPress);
+  document.removeEventListener('keydown', onEscPress);
   resetFilter();
 };
 
@@ -230,19 +243,19 @@ var setEffect = function (filter, level) {
   var filterEffect = '';
 
   switch (filter) {
-    case 'chrome':
+    case Effect.CHROME:
       filterEffect = 'grayscale(' + level / 100 + ')';
       break;
-    case 'sepia':
+    case Effect.SEPIA:
       filterEffect = 'sepia(' + level / 100 + ')';
       break;
-    case 'marvin':
+    case Effect.MARVIN:
       filterEffect = 'invert(' + level + '%)';
       break;
-    case 'phobos':
+    case Effect.PHOBOS:
       filterEffect = 'blur(' + (level / 100 * MAX_BLUR) + 'px)';
       break;
-    case 'heat':
+    case Effect.HEAT:
       filterEffect = 'brightness(' + (MIN_BRIGHTNESS + level / 100 * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + ')';
       break;
     default:
@@ -286,50 +299,60 @@ var descriptionInput = imgUploadOverlay.querySelector('.text__description');
 
 var validateHashtags = function () {
   var hashtagValue = hashtagInput.value.toLowerCase();
-  var errorMessage = '';
+  var errorArray = [];
 
   if (hashtagValue) {
     var hashtags = hashtagValue.split(' ');
 
     if (hashtags.length > HASHTAG_LIMIT) {
-      errorMessage = 'Нельзя указывать больше пяти хэш-тегов';
+      errorArray.push('Нельзя указывать больше пяти хэш-тегов');
     } else {
-      hashtags.forEach(function (hashtag, i) {
-        var hashtagSymbol = hashtag.split('#');
+      hashtags.forEach(function (currentHashtag, i) {
+        var hashtagSymbol = currentHashtag.split('#');
 
         if (hashtagSymbol.length > 2) {
-          errorMessage = 'Хэш-теги должны разделяться пробелами';
-        } else if (hashtag.indexOf('#') !== 0) {
-          errorMessage = 'Хэш-тег должен начинаться с символа #';
-        } else if (hashtag.length < HASHTAG_MIN_LENGTH) {
-          errorMessage = 'Хеш-тег не может состоять только из одной решётки';
-        } else if (hashtag.length > HASHTAG_MAX_LENGTH) {
-          errorMessage = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
+          errorArray.push('Хэш-теги должны разделяться пробелами');
+        } else if (currentHashtag.indexOf('#') !== 0) {
+          errorArray.push('Хэш-тег должен начинаться с символа #');
+        } else if (currentHashtag.length < HASHTAG_MIN_LENGTH) {
+          errorArray.push('Хеш-тег не может состоять только из одной решётки');
+        } else if (currentHashtag.length > HASHTAG_MAX_LENGTH) {
+          errorArray.push('Максимальная длина одного хэш-тега 20 символов, включая решётку');
         } else {
-          for (var j = i + 1; j < hashtags.length; j++) {
-            if (hashtags[j] === hashtags[i]) {
-              errorMessage = 'Один и тот же хэш-тег не может быть использован дважды';
-            }
+          var isDuplicated = hashtags.some(function (hashtag) {
+            return hashtag === currentHashtag;
+          });
+
+          if (isDuplicated) {
+            errorArray.push('Один и тот же хэш-тег не может быть использован дважды');
           }
         }
       });
     }
   }
 
-  hashtagInput.setCustomValidity(errorMessage);
-};
+  // Ищем уникальные значения в массиве
+  var getUniqTags = function (tags) {
+    var results = [];
 
-var onFieldFocus = function (evt) {
-  if (evt.key === ESC_KEY) {
-    // Потеря фокуса при нажатии ESC в тектовом поле
-    evt.stopPropagation();
-  }
+    tags.forEach(function (value) {
+      value = value.trim();
+
+      if (results.indexOf(value) === -1) {
+        results.push(value);
+      }
+    });
+
+    return results;
+  };
+
+  hashtagInput.setCustomValidity(getUniqTags(errorArray).join(', '));
 };
 
 hashtagInput.addEventListener('input', function () {
   validateHashtags();
 });
 
-hashtagInput.addEventListener('keydown', onFieldFocus);
-descriptionInput.addEventListener('keydown', onFieldFocus);
+hashtagInput.addEventListener('keydown', onEscPress);
+descriptionInput.addEventListener('keydown', onEscPress);
 
