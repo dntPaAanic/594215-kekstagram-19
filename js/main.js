@@ -318,14 +318,19 @@ var validateHashtags = function () {
           errorArray.push('Хеш-тег не может состоять только из одной решётки');
         } else if (currentHashtag.length > HASHTAG_MAX_LENGTH) {
           errorArray.push('Максимальная длина одного хэш-тега 20 символов, включая решётку');
-        } else {
-          var isDuplicated = hashtags.some(function (hashtag) {
-            return hashtag === currentHashtag;
-          });
-
-          if (isDuplicated) {
-            errorArray.push('Один и тот же хэш-тег не может быть использован дважды');
-          }
+        } else if (hashtags.slice(i + 1).find(function (item) {
+          return item === currentHashtag;
+        })) {
+          errorArray.push('Один и тот же хэш-тег не может быть использован дважды');
+          // var isDuplicated = hashtags.some(function (hashtag) {
+          //   return currentHashtag === hashtag;
+          // });
+          //
+          // if (isDuplicated) {
+          //   errorArray.push('Один и тот же хэш-тег не может быть использован дважды');
+          // }
+        } else if (!currentHashtag.match(/^#[\wа-яА-я]+/)) {
+          errorArray.push('строка после решётки должна состоять из букв и чисел и не может содержать спецсимволы, символы пунктуации, эмодзи');
         }
       });
     }
@@ -355,4 +360,3 @@ hashtagInput.addEventListener('input', function () {
 
 hashtagInput.addEventListener('keydown', onEscPress);
 descriptionInput.addEventListener('keydown', onEscPress);
-
