@@ -1,54 +1,6 @@
 'use strict';
 
 (function () {
-  var templatePictureItem = document.querySelector('#picture').content.querySelector('.picture');
-  var pictureList = document.querySelector('.pictures');
-
-
-  var makePicture = function (pictureItem) {
-    var newPictureElement = templatePictureItem.cloneNode(true);
-    var newPictureElementImg = newPictureElement.querySelector('.picture__img');
-
-    newPictureElementImg.src = pictureItem.url;
-    newPictureElementImg.alt = pictureItem.description;
-    newPictureElement.querySelector('.picture__likes').textContent = pictureItem.likes;
-    newPictureElement.querySelector('.picture__comments').textContent = pictureItem.comments.length;
-
-    return newPictureElement;
-  };
-
-  var createPictureList = function (photosArray) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photosArray.length; i++) {
-      fragment.appendChild(makePicture(photosArray[i]));
-    }
-    return fragment;
-  };
-
-  pictureList.appendChild(createPictureList(completedPhotoList));
-
-
-  var openEditForm = function () {
-    imgUploadOverlay.classList.remove('hidden');
-    closeEditButton.addEventListener('click', onCloseElementClick);
-    document.addEventListener('keydown', onEscPress);
-    effectController.classList.add('hidden');
-    defaultScaleValue();
-  };
-
-  var closeEditForm = function () {
-    imgUploadForm.reset();
-    imgUploadOverlay.classList.add('hidden');
-    document.removeEventListener('keydown', onEscPress);
-    resetFilter();
-  };
-
-  var onCloseElementClick = function () {
-    closeEditForm();
-  };
-
-  imgUploadButton.addEventListener('change', openEditForm);
-
   // Масштаб изображения
   var RESIZE_STEP = 25;
   var IMAGE_MIN_SIZE = 25;
@@ -58,6 +10,7 @@
   var scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
 
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
+  var imgUploadPreview = window.popupElements.imgUploadPreview;
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
   var scaleControlValue = document.querySelector('.scale__control--value');
 
@@ -90,4 +43,8 @@
 
   scaleControlSmaller.addEventListener('click', onSmallerControlPush);
   scaleControlBigger.addEventListener('click', onBiggerControlPush);
+
+  window.scale = {
+    defaultScaleValue: defaultScaleValue
+  };
 })();

@@ -106,7 +106,8 @@
   effectLevelPin.addEventListener('mouseup', onPinMouseUp);
 
   window.filters = {
-    filterClick: onFilterClick
+    onFilterClick: onFilterClick,
+    resetFilter: resetFilter
   };
 
 })();

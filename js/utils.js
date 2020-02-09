@@ -11,7 +11,8 @@
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
   };
-  // ивент по нажатию клавиши escape
+
+  // Ивент по нажатию клавиши escape
   var isEscEvent = function (evt, action) {
     if (evt.key === ESC_KEY) {
       action();
@@ -27,7 +28,6 @@
       });
     });
   };
-
 
   window.utils = {
     getRandomNumber: getRandomNumber,

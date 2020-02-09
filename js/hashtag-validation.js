@@ -64,9 +64,6 @@
     validateHashtags();
   });
 
-  hashtagInput.addEventListener('keydown', onEscPress);
-  descriptionInput.addEventListener('keydown', onEscPress);
-
   window.hasgtagValidation = {
     hashtagInput: hashtagInput,
     descriptionInput: descriptionInput

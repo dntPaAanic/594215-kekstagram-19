@@ -13,8 +13,6 @@
   var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
 
 
-
-
   window.popupElements = {
     imgUploadForm: imgUploadForm,
     imgUploadOverlay: imgUploadOverlay,
