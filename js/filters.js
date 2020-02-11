@@ -58,7 +58,7 @@
 
   // Устанавливает положение пина
   var setEffectLevel = function (level) {
-    effectLevelInput.value = level;
+    effectLevelInput.setAttribute('value', level);
     effectLevelBar.style.width = level + '%';
     effectLevelPin.style.left = level + '%';
   };
