@@ -26,9 +26,9 @@
   var effectLevelPin = effectController.querySelector('.effect-level__pin');
   var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
   var currentFilter;
-  var effectControllerCurrentCoord;
+  var effectControllerCoordinate;
   var effectControllerMinPosition;
-  var effectControllerMaxPosition;
+  var effectControllerWidth;
   var effectLevel;
 
 
@@ -39,15 +39,15 @@
     } else {
       effectController.classList.remove('hidden');
       // Ищем параметры полоски фильтра
-      effectControllerCurrentCoord = effectLevelLine.getBoundingClientRect();
-      effectControllerMinPosition = effectControllerCurrentCoord.left;
-      effectControllerMaxPosition = effectControllerCurrentCoord.width;
+      effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
+      effectControllerMinPosition = effectControllerCoordinate.left;
+      effectControllerWidth = effectControllerCoordinate.width;
     }
   };
 
   var getPinPosition = function (evt) {
-    var cursorCoord = evt.clientX - effectControllerMinPosition;
-    effectLevel = Math.round((cursorCoord / effectControllerMaxPosition) * 100);
+    var pinCoord = evt.clientX - effectControllerMinPosition;
+    effectLevel = Math.round((pinCoord / effectControllerWidth) * 100);
 
     if (effectLevel < 0) {
       effectLevel = 0;
@@ -56,13 +56,14 @@
     }
   };
 
-  // Устанавливает положение фильтра
+  // Устанавливает положение пина
   var setEffectLevel = function (level) {
     effectLevelInput.value = level;
     effectLevelBar.style.width = level + '%';
     effectLevelPin.style.left = level + '%';
   };
 
+  // Узнает текущее значение фильтра
   var getCurrentFilter = function () {
     return imgUploadOverlay.querySelector('.effects__radio:checked').value;
   };
