@@ -31,6 +31,12 @@
   var effectControllerWidth;
   var effectLevel;
 
+  // Ищем параметры полоски фильтра
+  var setEffectControllerCoord = function () {
+    effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
+    effectControllerMinPosition = effectControllerCoordinate.left;
+    effectControllerWidth = effectControllerCoordinate.width;
+  };
 
   // Показ/скрытие полоски фильтра
   var toggleEffectVisibility = function (filter) {
@@ -38,13 +44,11 @@
       effectController.classList.add('hidden');
     } else {
       effectController.classList.remove('hidden');
-      // Ищем параметры полоски фильтра
-      effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
-      effectControllerMinPosition = effectControllerCoordinate.left;
-      effectControllerWidth = effectControllerCoordinate.width;
+      setEffectControllerCoord();
     }
   };
 
+  // Расчет положения пина в процентах
   var getPinPosition = function (evt) {
     var pinCoord = evt.clientX - effectControllerMinPosition;
     effectLevel = Math.round((pinCoord / effectControllerWidth) * 100);
@@ -99,6 +103,7 @@
     imgUploadPreview.children[0].style.filter = filterEffect;
   };
 
+  // Сбрасывает эффект на значения по умолчанию
   var resetFilter = function () {
     imgUploadPreview.children[0].classList.remove('effects__preview--' + currentFilter);
     imgUploadPreview.children[0].style.filter = '';
