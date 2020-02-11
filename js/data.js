@@ -66,8 +66,6 @@
   var completedPhotoList = getPictureList(PICTURE_COUNT);
 
   window.data = {
-    getCommentsList: getCommentsList,
-    getPictureList: getPictureList,
     completedPhotoList: completedPhotoList
   };
 

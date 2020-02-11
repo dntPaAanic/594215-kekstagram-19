@@ -26,6 +26,10 @@
   var effectLevelPin = effectController.querySelector('.effect-level__pin');
   var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
   var currentFilter;
+  var effectControllerCurrentCoord;
+  var effectControllerMinPosition;
+  var effectControllerMaxPosition;
+  var effectLevel;
 
 
   // Показ/скрытие полоски фильтра
@@ -34,6 +38,21 @@
       effectController.classList.add('hidden');
     } else {
       effectController.classList.remove('hidden');
+      // Ищем параметры полоски фильтра
+      effectControllerCurrentCoord = effectLevelLine.getBoundingClientRect();
+      effectControllerMinPosition = effectControllerCurrentCoord.left;
+      effectControllerMaxPosition = effectControllerCurrentCoord.width;
+    }
+  };
+
+  var getPinPosition = function (evt) {
+    var cursorCoord = evt.clientX - effectControllerMinPosition;
+    effectLevel = Math.round((cursorCoord / effectControllerMaxPosition) * 100);
+
+    if (effectLevel < 0) {
+      effectLevel = 0;
+    } else if (effectLevel > 100) {
+      effectLevel = 100;
     }
   };
 
@@ -96,17 +115,29 @@
     filters[indexFilter].addEventListener('input', onFilterClick);
   }
 
-  // Применяет эффект после установки ползунка
-  var onPinMouseUp = function () {
-    var effectLevel = Math.round((effectLevelPin.offsetLeft / effectLevelLine.offsetWidth) * 100);
+  var onPinMove = function (evt) {
+    evt.preventDefault();
+    getPinPosition(evt);
     setEffectLevel(effectLevel);
     setEffect(getCurrentFilter(), effectLevel);
   };
 
-  effectLevelPin.addEventListener('mouseup', onPinMouseUp);
+  var onPinUp = function (evt) {
+    evt.preventDefault();
+    document.removeEventListener('mousemove', onPinMove);
+    document.removeEventListener('mouseup', onPinUp);
+  };
+
+  var onPinDown = function (evt) {
+    evt.preventDefault();
+    document.addEventListener('mousemove', onPinMove);
+    document.addEventListener('mouseup', onPinUp);
+
+  };
+
+  effectLevelPin.addEventListener('mousedown', onPinDown);
 
   window.filters = {
-    onFilterClick: onFilterClick,
     resetFilter: resetFilter
   };
 
