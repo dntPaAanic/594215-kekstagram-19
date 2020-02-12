@@ -11,6 +11,8 @@
 
   var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
   var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
+  var uploadForm = document.querySelector('.img-upload__form');
+  var submitFormButton = uploadForm.querySelector('#upload-submit');
 
 
   window.popupElements = {
@@ -19,6 +21,8 @@
     imgUploadButton: imgUploadButton,
     closeEditButton: closeEditButton,
     imgUploadPreview: imgUploadPreview,
-    effectController: effectController
+    effectController: effectController,
+    uploadForm: uploadForm,
+    submitFormButton: submitFormButton
   };
 })();
