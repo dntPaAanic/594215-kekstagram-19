@@ -25,20 +25,19 @@
     return newPictureElement;
   };
 
-  var createPictureList = function (photosArray) {
+  var onLoad = function (photosArray) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < photosArray.length; i++) {
       fragment.appendChild(makePicture(photosArray[i]));
     }
-    return fragment;
+    pictureList.appendChild(fragment);
   };
 
-  pictureList.appendChild(createPictureList(window.data.completedPhotoList));
+  // pictureList.appendChild(createPictureList(window.data.completedPhotoList));
 
   var onEscPress = function (evt) {
     window.utils.isEscEvent(evt, closeEditForm);
   };
-
 
   var openEditForm = function () {
     imgUploadOverlay.classList.remove('hidden');
@@ -60,6 +59,7 @@
   };
 
   imgUploadButton.addEventListener('change', openEditForm);
+  window.backend.load(onLoad, window.utils.onLoadError);
 
 
   // Потеря фокуса полями ввода по нажатию Esc

@@ -9,6 +9,9 @@
   var imgUploadOverlay = window.popupElements.imgUploadOverlay;
   var hashtagInput = imgUploadOverlay.querySelector('.text__hashtags');
   var descriptionInput = imgUploadOverlay.querySelector('.text__description');
+  var uploadForm = document.querySelector('.img-upload__form');
+  var submitFormButton = uploadForm.querySelector('#upload-submit');
+
 
   var validateHashtags = function () {
     var hashtagValue = hashtagInput.value.toLowerCase();
@@ -62,6 +65,13 @@
 
   hashtagInput.addEventListener('input', function () {
     validateHashtags();
+  });
+
+  submitFormButton.addEventListener('click', function () {
+    var invalidInput = uploadForm.querySelector('input:invalid');
+    if (invalidInput) {
+      invalidInput.style.border = '2px solid red';
+    }
   });
 
   window.hasgtagValidation = {
