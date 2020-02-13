@@ -96,10 +96,6 @@
     document.body.classList.remove('modal-open');
   };
 
-  fullScreenCloseButton.addEventListener('click', function () {
-    closeFullScreenPopup();
-  });
-
   // Показывает следующие комментарии при нажатии на кнопку
   var showMoreComments = function () {
     for (var i = 0; i < hiddenComments.length; i++) {
@@ -108,6 +104,10 @@
       }
     }
   };
+
+  fullScreenCloseButton.addEventListener('click', function () {
+    closeFullScreenPopup();
+  });
 
   fullScreenCommentsLoader.addEventListener('click', function () {
     showMoreComments();
