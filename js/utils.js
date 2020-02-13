@@ -55,6 +55,7 @@
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
     setFieldEscListener: setFieldEscListener,
-    onLoadError: onLoadError
+    onLoadError: onLoadError,
+    showErrorPopup: showErrorPopup
   };
 })();
