@@ -3,9 +3,7 @@
 'use strict';
 
 (function () {
-  // Ищет шаблон изображения случайного пользователя
   var templatePictureItem = document.querySelector('#picture').content.querySelector('.picture');
-  // Ищет контейнер для изображений от других пользователей
   var pictureList = document.querySelector('.pictures');
   var onPhotoCardClick;
 

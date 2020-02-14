@@ -31,7 +31,7 @@
   var effectControllerWidth;
   var effectLevel;
 
-  // Ищем параметры полоски фильтра
+  // Ищет параметры полоски фильтра
   var setEffectControllerCoord = function () {
     effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
     effectControllerMinPosition = effectControllerCoordinate.left;
