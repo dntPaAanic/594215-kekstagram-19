@@ -7,7 +7,7 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Получаем случайное значение из массива
+  // Получает случайное значение из массива
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
   };
