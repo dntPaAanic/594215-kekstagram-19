@@ -57,7 +57,7 @@
     fullScreenCommentsList.appendChild(fragment);
   };
 
-  // Закрывает окна загрузки файла по нажатию Esc
+  // Закрывает окно по нажатию Esc
   var onEscapePress = function (evt) {
     window.utils.isEscEvent(evt, closeFullScreenPopup);
   };
