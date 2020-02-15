@@ -7,7 +7,7 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Получаем случайное значение из массива
+  // Получает случайное значение из массива
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
   };
@@ -29,10 +29,33 @@
     });
   };
 
+  // Создание DOM-элемента, показывающего ошибку при сохранении формы
+  var showErrorPopup = function () {
+    var errorTemplate = document.querySelector('#error').content;
+    var errorMessagePopup = errorTemplate.cloneNode(true);
+    document.querySelector('main').appendChild(errorMessagePopup);
+  };
+
+  // Создание DOM-элемента, показывающего ошибку при загрузке
+  var onLoadError = function (response) {
+    showErrorPopup();
+    var errorWrapper = document.querySelector('.error__inner');
+    var errorTitle = errorWrapper.querySelector('.error__title');
+    var errorButton = errorWrapper.querySelector('.error__button');
+    var errorText = document.createElement('p');
+    errorTitle.textContent = 'Ошибка загрузки данных';
+    errorWrapper.removeChild(errorButton);
+    errorText.innerHTML = response;
+    errorWrapper.insertBefore(errorText, errorButton);
+  };
+
+
   window.utils = {
     getRandomNumber: getRandomNumber,
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
-    setFieldEscListener: setFieldEscListener
+    setFieldEscListener: setFieldEscListener,
+    onLoadError: onLoadError,
+    showErrorPopup: showErrorPopup
   };
 })();

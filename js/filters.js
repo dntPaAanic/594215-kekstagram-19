@@ -26,7 +26,17 @@
   var effectLevelPin = effectController.querySelector('.effect-level__pin');
   var filters = imgUploadOverlay.querySelectorAll('.effects__radio');
   var currentFilter;
+  var effectControllerCoordinate;
+  var effectControllerMinPosition;
+  var effectControllerWidth;
+  var effectLevel;
 
+  // Ищет параметры полоски фильтра
+  var setEffectControllerCoord = function () {
+    effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
+    effectControllerMinPosition = effectControllerCoordinate.left;
+    effectControllerWidth = effectControllerCoordinate.width;
+  };
 
   // Показ/скрытие полоски фильтра
   var toggleEffectVisibility = function (filter) {
@@ -34,16 +44,30 @@
       effectController.classList.add('hidden');
     } else {
       effectController.classList.remove('hidden');
+      setEffectControllerCoord();
     }
   };
 
-  // Устанавливает положение фильтра
+  // Расчет положения пина в процентах
+  var getPinPosition = function (evt) {
+    var pinCoord = evt.clientX - effectControllerMinPosition;
+    effectLevel = Math.round((pinCoord / effectControllerWidth) * 100);
+
+    if (effectLevel < 0) {
+      effectLevel = 0;
+    } else if (effectLevel > 100) {
+      effectLevel = 100;
+    }
+  };
+
+  // Устанавливает положение пина
   var setEffectLevel = function (level) {
-    effectLevelInput.value = level;
+    effectLevelInput.setAttribute('value', level);
     effectLevelBar.style.width = level + '%';
     effectLevelPin.style.left = level + '%';
   };
 
+  // Узнает текущее значение фильтра
   var getCurrentFilter = function () {
     return imgUploadOverlay.querySelector('.effects__radio:checked').value;
   };
@@ -79,6 +103,7 @@
     imgUploadPreview.children[0].style.filter = filterEffect;
   };
 
+  // Сбрасывает эффект на значения по умолчанию
   var resetFilter = function () {
     imgUploadPreview.children[0].classList.remove('effects__preview--' + currentFilter);
     imgUploadPreview.children[0].style.filter = '';
@@ -96,17 +121,29 @@
     filters[indexFilter].addEventListener('input', onFilterClick);
   }
 
-  // Применяет эффект после установки ползунка
-  var onPinMouseUp = function () {
-    var effectLevel = Math.round((effectLevelPin.offsetLeft / effectLevelLine.offsetWidth) * 100);
+  var onPinMove = function (evt) {
+    evt.preventDefault();
+    getPinPosition(evt);
     setEffectLevel(effectLevel);
     setEffect(getCurrentFilter(), effectLevel);
   };
 
-  effectLevelPin.addEventListener('mouseup', onPinMouseUp);
+  var onPinUp = function (evt) {
+    evt.preventDefault();
+    document.removeEventListener('mousemove', onPinMove);
+    document.removeEventListener('mouseup', onPinUp);
+  };
+
+  var onPinDown = function (evt) {
+    evt.preventDefault();
+    document.addEventListener('mousemove', onPinMove);
+    document.addEventListener('mouseup', onPinUp);
+
+  };
+
+  effectLevelPin.addEventListener('mousedown', onPinDown);
 
   window.filters = {
-    onFilterClick: onFilterClick,
     resetFilter: resetFilter
   };
 
