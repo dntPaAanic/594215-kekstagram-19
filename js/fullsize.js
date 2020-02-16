@@ -115,7 +115,7 @@
     toggleCommentsLoader();
   });
 
-  window.fullScreen = {
+  window.fullsize = {
     showFullScreenPopup: showFullScreenPopup
   };
 
