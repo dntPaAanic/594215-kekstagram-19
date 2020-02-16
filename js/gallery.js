@@ -32,7 +32,7 @@
   // Создает обработчик по клику на фотокарточку
   var addPhotoCardListener = function (photoCard, photoData) {
     onPhotoCardClick = function () {
-      window.fullsize.showFullScreenPopup(photoData);
+      window.fullSize.showFullSizePopup(photoData);
     };
     photoCard.addEventListener('click', onPhotoCardClick);
   };
