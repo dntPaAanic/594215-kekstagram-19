@@ -47,7 +47,7 @@
 
     var errorText = document.createElement('p');
     errorTitle.textContent = 'Ошибка загрузки данных';
-    errorWrapper.removeChild(errorButton);
+    // errorWrapper.removeChild(errorButton);
     errorText.innerHTML = response;
     errorWrapper.insertBefore(errorText, errorTitle);
   };
