@@ -5,6 +5,7 @@
 (function () {
   var templatePictureItem = document.querySelector('#picture').content.querySelector('.picture');
   var pictureList = document.querySelector('.pictures');
+  // Переменная для хранения обработчика в области видимости (для последующего удаления обработчика)
   var onPhotoCardClick;
 
   // создает разметку для миниатюры фотографии
@@ -20,11 +21,13 @@
     return newPictureElement;
   };
 
-  // Добавляет фотографии на страницу
-  var renderPhotos = function (photosArray) {
+  // Добавляет фотографии на страницу и добавляет обработчики на каждую из них
+  var renderPhotos = function (photoData) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photosArray.length; i++) {
-      fragment.appendChild(makePhotoCard(photosArray[i]));
+    var pictureElement;
+    for (var i = 0; i < photoData.length; i++) {
+      pictureElement = fragment.appendChild(makePhotoCard(photoData[i]));
+      addPhotoCardListener(pictureElement, photoData[i]);
     }
     pictureList.appendChild(fragment);
   };
@@ -32,23 +35,32 @@
   // Создает обработчик по клику на фотокарточку
   var addPhotoCardListener = function (photoCard, photoData) {
     onPhotoCardClick = function () {
-      window.fullScreen.showFullScreenPopup(photoData);
+      window.fullSize.showFullSizePopup(photoData);
     };
     photoCard.addEventListener('click', onPhotoCardClick);
   };
 
-  // Добавляет обработчики на все фотокарточки
-  var addAllPhotoCardListener = function (photoData) {
-    var photoPreviews = pictureList.querySelectorAll('.picture');
-    for (var j = 0; j < photoPreviews.length; j++) {
-      addPhotoCardListener(photoPreviews[j], photoData[j]);
-    }
+  // Удаляет фотографии
+  var clearGallery = function () {
+    var galleryPhotos = pictureList.querySelectorAll('.picture');
+    [].forEach.call(galleryPhotos, function (photo) {
+      photo.removeEventListener('click', onPhotoCardClick);
+      photo.remove();
+    });
   };
 
-  // Функция для получения фотографии с сервера при загрузке страницы
-  var onLoad = function (photoData) {
-    renderPhotos(photoData);
-    addAllPhotoCardListener(photoData);
+  var getPhotos = function (response) {
+    renderPhotos(response);
+    window.sortingActivation.activateSortingFilters();
+    window.initialData = response;
+    window.updateGallery = function (photoData) {
+      clearGallery();
+      renderPhotos(photoData);
+    };
+  };
+
+  var onLoad = function (response) {
+    getPhotos(response);
   };
 
   window.backend.load(onLoad, window.utils.onLoadError);

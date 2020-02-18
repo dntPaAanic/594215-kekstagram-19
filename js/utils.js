@@ -2,6 +2,10 @@
 
 (function () {
   var ESC_KEY = 'Escape';
+  var DEBOUNCE_INTERVAL = 500;
+  var errorWrapper;
+  var errorTitle;
+  // var errorButton;
 
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -10,6 +14,22 @@
   // Получает случайное значение из массива
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
+  };
+
+  // Выбирает случайные элементы массива заданной длины
+  var getRandomArray = function (array, elementsAmount) {
+    var selectedElements = [];
+    var element;
+
+    while (selectedElements.length < elementsAmount) {
+      element = getRandomArrElement(array);
+
+      if (selectedElements.indexOf(element) === -1) {
+        selectedElements.push(element);
+      }
+    }
+
+    return selectedElements;
   };
 
   // Ивент по нажатию клавиши escape
@@ -29,26 +49,44 @@
     });
   };
 
-  // Создание DOM-элемента, показывающего ошибку при сохранении формы
   var showErrorPopup = function () {
     var errorTemplate = document.querySelector('#error').content;
     var errorMessagePopup = errorTemplate.cloneNode(true);
     document.querySelector('main').appendChild(errorMessagePopup);
+    errorWrapper = document.querySelector('.error__inner');
+    errorTitle = errorWrapper.querySelector('.error__title');
+    // errorButton = errorWrapper.querySelector('.error__button');
   };
 
   // Создание DOM-элемента, показывающего ошибку при загрузке
   var onLoadError = function (response) {
     showErrorPopup();
-    var errorWrapper = document.querySelector('.error__inner');
-    var errorTitle = errorWrapper.querySelector('.error__title');
-    var errorButton = errorWrapper.querySelector('.error__button');
+
     var errorText = document.createElement('p');
     errorTitle.textContent = 'Ошибка загрузки данных';
-    errorWrapper.removeChild(errorButton);
+    // errorWrapper.removeChild(errorButton);
     errorText.innerHTML = response;
-    errorWrapper.insertBefore(errorText, errorButton);
+    errorWrapper.insertBefore(errorText, errorTitle);
   };
 
+  // Создание DOM-элемента, показывающего ошибку при сохранении формы
+  var onUploadError = function (response) {
+    showErrorPopup();
+    errorTitle.innerHTML = response;
+  };
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
 
   window.utils = {
     getRandomNumber: getRandomNumber,
@@ -56,6 +94,8 @@
     isEscEvent: isEscEvent,
     setFieldEscListener: setFieldEscListener,
     onLoadError: onLoadError,
-    showErrorPopup: showErrorPopup
+    onUploadError: onUploadError,
+    getRandomArray: getRandomArray,
+    debounce: debounce
   };
 })();

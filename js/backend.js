@@ -14,7 +14,6 @@
   };
 
   var setup = function (onLoad, onError) {
-
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
