@@ -5,6 +5,7 @@
 (function () {
   var templatePictureItem = document.querySelector('#picture').content.querySelector('.picture');
   var pictureList = document.querySelector('.pictures');
+  // Переменная для хранения обработчика в области видимости (для последующего удаления обработчика)
   var onPhotoCardClick;
 
   // создает разметку для миниатюры фотографии
@@ -39,9 +40,27 @@
     photoCard.addEventListener('click', onPhotoCardClick);
   };
 
-  // Функция для получения фотографии с сервера при загрузке страницы
-  var onLoad = function (photoData) {
-    renderPhotos(photoData);
+  // Удаляет фотографии
+  var clearGallery = function () {
+    var galleryPhotos = pictureList.querySelectorAll('.picture');
+    [].forEach.call(galleryPhotos, function (photo) {
+      photo.removeEventListener('click', onPhotoCardClick);
+      photo.remove();
+    });
+  };
+
+  var getPhotos = function (response) {
+    renderPhotos(response);
+    window.sortingActivation.activateSortingFilters();
+    window.initialData = response;
+    window.updateGallery = function (photoData) {
+      clearGallery();
+      renderPhotos(photoData);
+    };
+  };
+
+  var onLoad = function (response) {
+    getPhotos(response);
   };
 
   window.backend.load(onLoad, window.utils.onLoadError);

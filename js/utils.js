@@ -2,8 +2,10 @@
 
 (function () {
   var ESC_KEY = 'Escape';
+  var DEBOUNCE_INTERVAL = 500;
   var errorWrapper;
   var errorTitle;
+  // var errorButton;
 
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -12,6 +14,22 @@
   // Получает случайное значение из массива
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
+  };
+
+  // Выбирает случайные элементы массива заданной длины
+  var getRandomArray = function (array, elementsAmount) {
+    var selectedElements = [];
+    var element;
+
+    while (selectedElements.length < elementsAmount) {
+      element = getRandomArrElement(array);
+
+      if (selectedElements.indexOf(element) === -1) {
+        selectedElements.push(element);
+      }
+    }
+
+    return selectedElements;
   };
 
   // Ивент по нажатию клавиши escape
@@ -37,7 +55,7 @@
     document.querySelector('main').appendChild(errorMessagePopup);
     errorWrapper = document.querySelector('.error__inner');
     errorTitle = errorWrapper.querySelector('.error__title');
-    errorButton = errorWrapper.querySelector('.error__button');
+    // errorButton = errorWrapper.querySelector('.error__button');
   };
 
   // Создание DOM-элемента, показывающего ошибку при загрузке
@@ -57,12 +75,27 @@
     errorTitle.innerHTML = response;
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utils = {
     getRandomNumber: getRandomNumber,
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
     setFieldEscListener: setFieldEscListener,
     onLoadError: onLoadError,
-    onUploadError: onUploadError
+    onUploadError: onUploadError,
+    getRandomArray: getRandomArray,
+    debounce: debounce
   };
 })();
