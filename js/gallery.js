@@ -49,12 +49,19 @@
     });
   };
 
+  // Получает фотографии с сервера
   var getPhotos = function (response) {
+    // Заполняет галерею фотографиями
     renderPhotos(response);
+    // Показывает кнопки фильтров для сортировки полученных фото
     window.sortingActivation.activateSortingFilters();
+    // Сохраняет исходный массив после его загрузки с сервера
     window.initialData = response;
+    // Обновляет галерею
     window.updateGallery = function (photoData) {
+      // Очищает галерею
       clearGallery();
+      // Заполняет галерею новыми фотографиями
       renderPhotos(photoData);
     };
   };
