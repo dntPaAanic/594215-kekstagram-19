@@ -41,12 +41,27 @@
   };
 
   // Удаляет фотографии
+  // var clearGallery = function () {
+  //   var galleryPhotos = pictureList.querySelectorAll('.picture');
+  //   [].forEach.call(galleryPhotos, function (photo) {
+  //     photo.removeEventListener('click', onPhotoCardClick);
+  //     photo.remove();
+  //   });
+  // };
+
   var clearGallery = function () {
-    var galleryPhotos = pictureList.querySelectorAll('.picture');
-    [].forEach.call(galleryPhotos, function (photo) {
+    pictureList.querySelectorAll('.picture').forEach(function (photo) {
       photo.removeEventListener('click', onPhotoCardClick);
       photo.remove();
     });
+  };
+
+  // Обновляет галерею
+  var updateGallery = function (photoData) {
+    // Очищает галерею
+    clearGallery();
+    // Заполняет галерею новыми фотографиями
+    renderPhotos(photoData);
   };
 
   // Получает фотографии с сервера
@@ -57,13 +72,6 @@
     window.sortingActivation.activateSortingFilters();
     // Сохраняет исходный массив после его загрузки с сервера
     window.initialData = response;
-    // Обновляет галерею
-    window.updateGallery = function (photoData) {
-      // Очищает галерею
-      clearGallery();
-      // Заполняет галерею новыми фотографиями
-      renderPhotos(photoData);
-    };
   };
 
   var onLoad = function (response) {
@@ -71,5 +79,9 @@
   };
 
   window.backend.load(onLoad, window.utils.onLoadError);
+
+  window.gallery = {
+    updateGallery: updateGallery
+  };
 
 })();

@@ -18,7 +18,7 @@
     }
 
     filterDefault.addEventListener('click', window.utils.debounce(function () {
-      window.updateGallery(window.initialData);
+      window.gallery.updateGallery(window.initialData);
     }));
     filterRandom.addEventListener('click', window.utils.debounce(function () {
       window.photoSorting.showRandomPhotos();
