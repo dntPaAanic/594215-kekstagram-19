@@ -17,10 +17,8 @@
         evt.target.classList.add('img-filters__button--active');
       });
     });
-
-    // Делает сортировку
-
   };
+
   filterDefault.addEventListener('click', window.utils.debounce(function () {
     window.gallery.updateGallery(window.initialData);
   }));

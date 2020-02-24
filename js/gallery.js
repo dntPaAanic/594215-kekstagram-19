@@ -25,10 +25,10 @@
   var renderPhotos = function (photoData) {
     var fragment = document.createDocumentFragment();
     var pictureElement;
-    for (var i = 0; i < photoData.length; i++) {
-      pictureElement = fragment.appendChild(makePhotoCard(photoData[i]));
-      addPhotoCardListener(pictureElement, photoData[i]);
-    }
+    photoData.forEach(function (photo) {
+      pictureElement = fragment.appendChild(makePhotoCard(photo));
+      addPhotoCardListener(pictureElement, photo);
+    });
     pictureList.appendChild(fragment);
   };
 
@@ -41,14 +41,6 @@
   };
 
   // Удаляет фотографии
-  // var clearGallery = function () {
-  //   var galleryPhotos = pictureList.querySelectorAll('.picture');
-  //   [].forEach.call(galleryPhotos, function (photo) {
-  //     photo.removeEventListener('click', onPhotoCardClick);
-  //     photo.remove();
-  //   });
-  // };
-
   var clearGallery = function () {
     pictureList.querySelectorAll('.picture').forEach(function (photo) {
       photo.removeEventListener('click', onPhotoCardClick);
