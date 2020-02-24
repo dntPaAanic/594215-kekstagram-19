@@ -98,7 +98,8 @@
   });
 
   window.fullSize = {
-    showFullSizePopup: showFullSizePopup
+    showFullSizePopup: showFullSizePopup,
+    fullSizePhoto: fullSizePhoto
   };
 
 })();

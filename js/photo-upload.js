@@ -2,7 +2,8 @@
 
 'use strict';
 (function () {
-  var uploadForm = window.popupElements.uploadForm;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
   var imgUploadForm = window.popupElements.imgUploadForm;
   var imgUploadButton = window.popupElements.imgUploadButton;
   var imgUploadOverlay = window.popupElements.imgUploadOverlay;
@@ -10,6 +11,8 @@
   var effectController = window.popupElements.effectController;
   var hashtagInput = window.hasgtagValidation.hashtagInput;
   var descriptionInput = window.hasgtagValidation.descriptionInput;
+  var fileChooser = window.popupElements.fileChooser;
+  var imgUploadPreview = window.popupElements.imgUploadPreview.children[0];
 
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var successButton = successTemplate.querySelector('.success__button');
@@ -17,6 +20,26 @@
   var errorButton = errorTemplate.querySelector('.error__button');
   var successElement;
   var errorElement;
+
+  var imageUpload = function () {
+    var file = fileChooser.files[0];
+    var fileName = file.name.toLowerCase();
+    var matches = FILE_TYPES.some(function (type) {
+      return fileName.endsWith(type);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        imgUploadPreview.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
+    }
+
+    return matches;
+  };
 
   var onUploadSuccess = function () {
     closeEditForm();
@@ -69,6 +92,7 @@
     imgUploadForm.reset();
     imgUploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', onEscPress);
+    closeEditButton.removeEventListener('click', onCloseElementClick);
     window.filters.resetFilter();
   };
 
@@ -76,9 +100,21 @@
     closeEditForm();
   };
 
-  imgUploadButton.addEventListener('change', function () {
-    openEditForm();
-  });
+  var formReset = function () {
+    imgUploadForm.reset();
+    window.filters.resetFilter();
+  };
+
+  var onUploadImageChange = function () {
+    if (imageUpload()) {
+      openEditForm();
+    } else {
+      formReset();
+      window.utils.showErrorPopup();
+    }
+  };
+
+  imgUploadButton.addEventListener('change', onUploadImageChange);
 
   successButton.addEventListener('click', function () {
     successTemplate.remove();
@@ -104,9 +140,9 @@
     }
   });
 
-  uploadForm.addEventListener('submit', function (evt) {
+  imgUploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(uploadForm), onUploadSuccess, onUploadError);
+    window.backend.upload(new FormData(imgUploadForm), onUploadSuccess, onUploadError);
   });
 
 

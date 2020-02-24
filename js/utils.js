@@ -94,6 +94,7 @@
     onLoadError: onLoadError,
     onUploadError: onUploadError,
     getRandomArray: getRandomArray,
-    debounce: debounce
+    debounce: debounce,
+    showErrorPopup: showErrorPopup
   };
 })();
