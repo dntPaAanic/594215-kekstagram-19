@@ -62,7 +62,8 @@
 
     var errorText = document.createElement('p');
     errorTitle.textContent = 'Ошибка загрузки данных';
-    // errorWrapper.removeChild(errorButton);
+    var errorButton = errorWrapper.querySelector('.error__button');
+    errorWrapper.removeChild(errorButton);
     errorText.innerHTML = response;
     errorWrapper.insertBefore(errorText, errorTitle);
   };

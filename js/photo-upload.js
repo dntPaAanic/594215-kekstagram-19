@@ -42,6 +42,7 @@
   };
 
   var onUploadSuccess = function () {
+    document.addEventListener('keydown', onSuccessEscPress);
     closeEditForm();
     document.querySelector('main').appendChild(successTemplate);
     successElement = document.querySelector('.success');
@@ -81,6 +82,7 @@
 
   // Показывает окно с ошибкой при неудачной отправке фото
   var onUploadError = function (message) {
+    document.addEventListener('keydown', onErrorEscPress);
     closeEditForm();
     document.querySelector('main').appendChild(errorTemplate);
     errorElement = document.querySelector('.error');
@@ -120,7 +122,6 @@
     successTemplate.remove();
   });
 
-  document.addEventListener('keydown', onSuccessEscPress);
 
   successTemplate.addEventListener('click', function (evt) {
     if (evt.target === successElement) {
@@ -131,8 +132,6 @@
   errorButton.addEventListener('click', function () {
     errorTemplate.remove();
   });
-
-  document.addEventListener('keydown', onErrorEscPress);
 
   errorTemplate.addEventListener('click', function (evt) {
     if (evt.target === errorElement) {
