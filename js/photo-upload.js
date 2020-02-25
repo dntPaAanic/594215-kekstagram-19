@@ -46,6 +46,7 @@
     closeEditForm();
     document.querySelector('main').appendChild(successTemplate);
     successElement = document.querySelector('.success');
+    successButton.addEventListener('click', onSuccessButtonClick);
     successButton.focus();
   };
 
@@ -88,6 +89,7 @@
     document.querySelector('main').appendChild(errorTemplate);
     errorElement = document.querySelector('.error');
     window.utils.onUploadError(message);
+    errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.focus();
   };
 
@@ -132,14 +134,12 @@
 
   imgUploadButton.addEventListener('change', onUploadImageChange);
 
-  successButton.addEventListener('click', onSuccessButtonClick);
   successTemplate.addEventListener('click', function (evt) {
     if (evt.target === successElement) {
       successTemplate.remove();
     }
   });
 
-  errorButton.addEventListener('click', onErrorButtonClick);
   errorTemplate.addEventListener('click', function (evt) {
     if (evt.target === errorElement) {
       errorTemplate.remove();
