@@ -46,6 +46,7 @@
     closeEditForm();
     document.querySelector('main').appendChild(successTemplate);
     successElement = document.querySelector('.success');
+    successButton.focus();
   };
 
   var closeSuccessWindow = function () {
@@ -87,6 +88,7 @@
     document.querySelector('main').appendChild(errorTemplate);
     errorElement = document.querySelector('.error');
     window.utils.onUploadError(message);
+    errorButton.focus();
   };
 
   // Закрывает окно редактирования фото
@@ -95,6 +97,8 @@
     imgUploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', onEscPress);
     closeEditButton.removeEventListener('click', onCloseElementClick);
+    window.scale.scaleControlSmaller.removeEventListener('click', window.scale.onSmallerControlPush);
+    window.scale.scaleControlBigger.removeEventListener('click', window.scale.onBiggerControlPush);
     window.filters.resetFilter();
   };
 
@@ -116,23 +120,26 @@
     }
   };
 
+  var onSuccessButtonClick = function () {
+    successTemplate.remove();
+    successButton.removeEventListener('click', onSuccessButtonClick);
+  };
+
+  var onErrorButtonClick = function () {
+    errorTemplate.remove();
+    errorButton.removeEventListener('click', onErrorButtonClick);
+  };
+
   imgUploadButton.addEventListener('change', onUploadImageChange);
 
-  successButton.addEventListener('click', function () {
-    successTemplate.remove();
-  });
-
-
+  successButton.addEventListener('click', onSuccessButtonClick);
   successTemplate.addEventListener('click', function (evt) {
     if (evt.target === successElement) {
       successTemplate.remove();
     }
   });
 
-  errorButton.addEventListener('click', function () {
-    errorTemplate.remove();
-  });
-
+  errorButton.addEventListener('click', onErrorButtonClick);
   errorTemplate.addEventListener('click', function (evt) {
     if (evt.target === errorElement) {
       errorTemplate.remove();

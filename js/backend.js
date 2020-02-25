@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL_UPLOAD = 'https://js.dump.academy/kekstagra';
+  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
   var URL_DOWNLOAD = 'https://js.dump.academy/kekstagram/data';
   var TIMEOUT = 10000;
 
