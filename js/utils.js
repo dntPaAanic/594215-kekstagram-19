@@ -5,6 +5,7 @@
   var DEBOUNCE_INTERVAL = 500;
   var errorWrapper;
   var errorTitle;
+  var errorButton;
 
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -54,15 +55,14 @@
     document.querySelector('main').appendChild(errorMessagePopup);
     errorWrapper = document.querySelector('.error__inner');
     errorTitle = errorWrapper.querySelector('.error__title');
+    errorButton = errorWrapper.querySelector('.error__button');
   };
 
   // Создание DOM-элемента, показывающего ошибку при загрузке
   var onLoadError = function (response) {
     showErrorPopup();
-
     var errorText = document.createElement('p');
     errorTitle.textContent = 'Ошибка загрузки данных';
-    var errorButton = errorWrapper.querySelector('.error__button');
     errorWrapper.removeChild(errorButton);
     errorText.innerHTML = response;
     errorWrapper.insertBefore(errorText, errorTitle);
@@ -72,6 +72,11 @@
   var onUploadError = function (response) {
     showErrorPopup();
     errorTitle.innerHTML = response;
+  };
+
+  var showFileExtensionError = function () {
+    showErrorPopup();
+    errorTitle.textContent = 'Неверный формат изображения';
   };
 
   var debounce = function (cb) {
@@ -96,6 +101,6 @@
     onUploadError: onUploadError,
     getRandomArray: getRandomArray,
     debounce: debounce,
-    showErrorPopup: showErrorPopup
+    showFileExtensionError: showFileExtensionError
   };
 })();

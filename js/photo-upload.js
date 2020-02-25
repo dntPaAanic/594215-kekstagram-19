@@ -93,6 +93,15 @@
     errorButton.focus();
   };
 
+  var showFileExtensionError = function () {
+    document.addEventListener('keydown', onErrorEscPress);
+    document.querySelector('main').appendChild(errorTemplate);
+    errorElement = document.querySelector('.error');
+    window.utils.showFileExtensionError();
+    errorButton.addEventListener('click', onErrorButtonClick);
+    errorButton.focus();
+  };
+
   // Закрывает окно редактирования фото
   var closeEditForm = function () {
     imgUploadForm.reset();
@@ -118,7 +127,7 @@
       openEditForm();
     } else {
       formReset();
-      window.utils.showErrorPopup();
+      showFileExtensionError();
     }
   };
 
@@ -155,5 +164,4 @@
   // Потеря фокуса полями ввода по нажатию Esc
   window.utils.setFieldEscListener(hashtagInput);
   window.utils.setFieldEscListener(descriptionInput);
-
 })();
