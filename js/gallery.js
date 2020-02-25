@@ -70,7 +70,7 @@
     getPhotos(response);
   };
 
-  window.backend.load(onLoad, window.utils.onLoadError);
+  window.backend.load(onLoad, window.photoUpload.onError);
 
   window.gallery = {
     updateGallery: updateGallery

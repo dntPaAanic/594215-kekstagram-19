@@ -9,14 +9,13 @@
   var imgUploadOverlay = window.popupElements.imgUploadOverlay;
   var closeEditButton = window.popupElements.closeEditButton;
   var effectController = window.popupElements.effectController;
-  var hashtagInput = window.hasgtagValidation.hashtagInput;
-  var descriptionInput = window.hasgtagValidation.descriptionInput;
   var fileChooser = window.popupElements.fileChooser;
   var imgUploadPreview = window.popupElements.imgUploadPreview.children[0];
 
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var successButton = successTemplate.querySelector('.success__button');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorTitle = errorTemplate.querySelector('.error__title');
   var errorButton = errorTemplate.querySelector('.error__button');
   var successElement;
   var errorElement;
@@ -82,13 +81,12 @@
     window.scale.defaultScaleValue();
   };
 
-  // Показывает окно с ошибкой при неудачной отправке фото
-  var onUploadError = function (message) {
+  var onError = function (response) {
     document.addEventListener('keydown', onErrorEscPress);
     closeEditForm();
     document.querySelector('main').appendChild(errorTemplate);
     errorElement = document.querySelector('.error');
-    window.utils.onUploadError(message);
+    errorTitle.textContent = response;
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.focus();
   };
@@ -97,7 +95,7 @@
     document.addEventListener('keydown', onErrorEscPress);
     document.querySelector('main').appendChild(errorTemplate);
     errorElement = document.querySelector('.error');
-    window.utils.showFileExtensionError();
+    errorTitle.textContent = 'Неверный формат изображения';
     errorButton.addEventListener('click', onErrorButtonClick);
     errorButton.focus();
   };
@@ -157,11 +155,11 @@
 
   imgUploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(imgUploadForm), onUploadSuccess, onUploadError);
+    window.backend.upload(new FormData(imgUploadForm), onUploadSuccess, onError);
   });
 
+  window.photoUpload = {
+    onError: onError
+  };
 
-  // Потеря фокуса полями ввода по нажатию Esc
-  window.utils.setFieldEscListener(hashtagInput);
-  window.utils.setFieldEscListener(descriptionInput);
 })();

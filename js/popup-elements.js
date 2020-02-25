@@ -14,6 +14,9 @@
   var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
   var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
 
+  var hashtagInput = imgUploadOverlay.querySelector('.text__hashtags');
+  var descriptionInput = imgUploadOverlay.querySelector('.text__description');
+
   window.popupElements = {
     imgUploadForm: imgUploadForm,
     imgUploadOverlay: imgUploadOverlay,
@@ -22,6 +25,8 @@
     imgUploadPreview: imgUploadPreview,
     effectController: effectController,
     submitFormButton: submitFormButton,
-    fileChooser: fileChooser
+    fileChooser: fileChooser,
+    hashtagInput: hashtagInput,
+    descriptionInput: descriptionInput
   };
 })();

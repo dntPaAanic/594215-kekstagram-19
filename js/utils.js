@@ -3,9 +3,6 @@
 (function () {
   var ESC_KEY = 'Escape';
   var DEBOUNCE_INTERVAL = 500;
-  var errorWrapper;
-  var errorTitle;
-  var errorButton;
 
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -49,36 +46,6 @@
     });
   };
 
-  var showErrorPopup = function () {
-    var errorTemplate = document.querySelector('#error').content;
-    var errorMessagePopup = errorTemplate.cloneNode(true);
-    document.querySelector('main').appendChild(errorMessagePopup);
-    errorWrapper = document.querySelector('.error__inner');
-    errorTitle = errorWrapper.querySelector('.error__title');
-    errorButton = errorWrapper.querySelector('.error__button');
-  };
-
-  // Создание DOM-элемента, показывающего ошибку при загрузке
-  var onLoadError = function (response) {
-    showErrorPopup();
-    var errorText = document.createElement('p');
-    errorTitle.textContent = 'Ошибка загрузки данных';
-    errorWrapper.removeChild(errorButton);
-    errorText.innerHTML = response;
-    errorWrapper.insertBefore(errorText, errorTitle);
-  };
-
-  // Создание DOM-элемента, показывающего ошибку при сохранении формы
-  var onUploadError = function (response) {
-    showErrorPopup();
-    errorTitle.innerHTML = response;
-  };
-
-  var showFileExtensionError = function () {
-    showErrorPopup();
-    errorTitle.textContent = 'Неверный формат изображения';
-  };
-
   var debounce = function (cb) {
     var lastTimeout = null;
     return function () {
@@ -97,10 +64,7 @@
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
     setFieldEscListener: setFieldEscListener,
-    onLoadError: onLoadError,
-    onUploadError: onUploadError,
     getRandomArray: getRandomArray,
     debounce: debounce,
-    showFileExtensionError: showFileExtensionError
   };
 })();
