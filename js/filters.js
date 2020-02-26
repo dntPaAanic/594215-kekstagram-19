@@ -37,7 +37,6 @@
     }
   };
 
-
   var getValuePinAndDepth = function (evt) {
     // Ищет параметры полоски фильтра
     var effectControllerCoordinate = effectLevelLine.getBoundingClientRect();
@@ -112,9 +111,12 @@
     applyFilter(currentFilter);
   };
 
-  for (var indexFilter = 0; indexFilter < filters.length; indexFilter++) {
-    filters[indexFilter].addEventListener('input', onFilterClick);
-  }
+  // Добавляет обработчики на каждый фильтр
+  filters.forEach(function (filterIndex) {
+    filterIndex.addEventListener('click', function () {
+      onFilterClick();
+    });
+  });
 
   var onPinMove = function (evt) {
     evt.preventDefault();

@@ -41,10 +41,11 @@
 
   };
 
-  scaleControlSmaller.addEventListener('click', onSmallerControlPush);
-  scaleControlBigger.addEventListener('click', onBiggerControlPush);
-
   window.scale = {
-    defaultScaleValue: defaultScaleValue
+    defaultScaleValue: defaultScaleValue,
+    onSmallerControlPush: onSmallerControlPush,
+    onBiggerControlPush: onBiggerControlPush,
+    scaleControlBigger: scaleControlBigger,
+    scaleControlSmaller: scaleControlSmaller
   };
 })();

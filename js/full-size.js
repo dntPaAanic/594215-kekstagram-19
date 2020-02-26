@@ -16,6 +16,8 @@
   var fullSizeCloseButton = fullSizePopup.querySelector('.big-picture__cancel');
   var fullSizeCommentsList = fullSizePopup.querySelector('.social__comments');
   var fullSizeComment = fullSizeCommentsList.querySelector('.social__comment');
+  var hashtagInput = window.popupElements.hashtagInput;
+  var descriptionInput = window.popupElements.descriptionInput;
   var currentComments = [];
 
   // Собирает один комментарий
@@ -97,8 +99,13 @@
     closeFullSizePopup();
   });
 
+  // Потеря фокуса полями ввода по нажатию Esc
+  window.utils.setFieldEscListener(hashtagInput);
+  window.utils.setFieldEscListener(descriptionInput);
+
   window.fullSize = {
-    showFullSizePopup: showFullSizePopup
+    showFullSizePopup: showFullSizePopup,
+    fullSizePhoto: fullSizePhoto
   };
 
 })();
