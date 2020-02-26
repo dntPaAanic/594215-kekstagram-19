@@ -41,9 +41,6 @@
 
   };
 
-  scaleControlSmaller.addEventListener('click', onSmallerControlPush);
-  scaleControlBigger.addEventListener('click', onBiggerControlPush);
-
   window.scale = {
     defaultScaleValue: defaultScaleValue,
     onSmallerControlPush: onSmallerControlPush,

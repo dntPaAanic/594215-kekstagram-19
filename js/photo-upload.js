@@ -20,6 +20,15 @@
   var successElement;
   var errorElement;
 
+  var onUploadImageChange = function () {
+    if (imageUpload()) {
+      openEditForm();
+    } else {
+      formReset();
+      showFileExtensionError();
+    }
+  };
+
   var imageUpload = function () {
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
@@ -40,6 +49,33 @@
     return matches;
   };
 
+  // Открывает окно редактироания фото
+  var openEditForm = function () {
+    imgUploadOverlay.classList.remove('hidden');
+    closeEditButton.addEventListener('click', onCloseElementClick);
+    document.addEventListener('keydown', onEscPress);
+    effectController.classList.add('hidden');
+    window.scale.defaultScaleValue();
+    window.scale.scaleControlSmaller.addEventListener('click', window.scale.onSmallerControlPush);
+    window.scale.scaleControlBigger.addEventListener('click', window.scale.onBiggerControlPush);
+  };
+
+  // Закрывает окно редактирования фото
+  var closeEditForm = function () {
+    imgUploadForm.reset();
+    imgUploadOverlay.classList.add('hidden');
+    window.filters.resetFilter();
+    imgUploadButton.value = '';
+    window.hashgtagValidation.hashtagInput.value = '';
+    window.hashgtagValidation.hashtagInput.style.border = 'none';
+    window.hashgtagValidation.hashtagInput.setCustomValidity('');
+    window.hashgtagValidation.descriptionInput.value = '';
+    document.removeEventListener('keydown', onEscPress);
+    closeEditButton.removeEventListener('click', onCloseElementClick);
+    window.scale.scaleControlSmaller.removeEventListener('click', window.scale.onSmallerControlPush);
+    window.scale.scaleControlBigger.removeEventListener('click', window.scale.onBiggerControlPush);
+  };
+
   var onUploadSuccess = function () {
     document.addEventListener('keydown', onSuccessEscPress);
     closeEditForm();
@@ -47,6 +83,27 @@
     successElement = document.querySelector('.success');
     successButton.addEventListener('click', onSuccessButtonClick);
     successButton.focus();
+  };
+
+  var showPopupError = function () {
+    document.querySelector('main').appendChild(errorTemplate);
+    errorElement = document.querySelector('.error');
+    errorButton.focus();
+  };
+
+  var onError = function (response) {
+    closeEditForm();
+    showPopupError();
+    errorTitle.textContent = response;
+    errorButton.addEventListener('click', onErrorButtonClick);
+    document.addEventListener('keydown', onErrorEscPress);
+  };
+
+  var showFileExtensionError = function () {
+    showPopupError();
+    errorTitle.textContent = 'Неверный формат изображения';
+    errorButton.addEventListener('click', onErrorButtonClick);
+    document.addEventListener('keydown', onErrorEscPress);
   };
 
   var closeSuccessWindow = function () {
@@ -67,48 +124,8 @@
     window.utils.isEscEvent(evt, closeErrorWindow);
   };
 
-  // Закрывает окно редактирования фото по нажатию на Esc
   var onEscPress = function (evt) {
     window.utils.isEscEvent(evt, closeEditForm);
-  };
-
-  // Открывает окно редактироания фото
-  var openEditForm = function () {
-    imgUploadOverlay.classList.remove('hidden');
-    closeEditButton.addEventListener('click', onCloseElementClick);
-    document.addEventListener('keydown', onEscPress);
-    effectController.classList.add('hidden');
-    window.scale.defaultScaleValue();
-  };
-
-  var onError = function (response) {
-    document.addEventListener('keydown', onErrorEscPress);
-    closeEditForm();
-    document.querySelector('main').appendChild(errorTemplate);
-    errorElement = document.querySelector('.error');
-    errorTitle.textContent = response;
-    errorButton.addEventListener('click', onErrorButtonClick);
-    errorButton.focus();
-  };
-
-  var showFileExtensionError = function () {
-    document.addEventListener('keydown', onErrorEscPress);
-    document.querySelector('main').appendChild(errorTemplate);
-    errorElement = document.querySelector('.error');
-    errorTitle.textContent = 'Неверный формат изображения';
-    errorButton.addEventListener('click', onErrorButtonClick);
-    errorButton.focus();
-  };
-
-  // Закрывает окно редактирования фото
-  var closeEditForm = function () {
-    imgUploadForm.reset();
-    imgUploadOverlay.classList.add('hidden');
-    document.removeEventListener('keydown', onEscPress);
-    closeEditButton.removeEventListener('click', onCloseElementClick);
-    window.scale.scaleControlSmaller.removeEventListener('click', window.scale.onSmallerControlPush);
-    window.scale.scaleControlBigger.removeEventListener('click', window.scale.onBiggerControlPush);
-    window.filters.resetFilter();
   };
 
   var onCloseElementClick = function () {
@@ -118,15 +135,6 @@
   var formReset = function () {
     imgUploadForm.reset();
     window.filters.resetFilter();
-  };
-
-  var onUploadImageChange = function () {
-    if (imageUpload()) {
-      openEditForm();
-    } else {
-      formReset();
-      showFileExtensionError();
-    }
   };
 
   var onSuccessButtonClick = function () {

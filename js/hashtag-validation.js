@@ -14,6 +14,7 @@
 
 
   var validateHashtags = function () {
+    hashtagInput.style.border = 'none';
     var hashtagValue = hashtagInput.value.toLowerCase();
     var errorArray = [];
 
