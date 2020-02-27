@@ -109,11 +109,13 @@
   var closeSuccessWindow = function () {
     successTemplate.remove();
     document.removeEventListener('keydown', onSuccessEscPress);
+    successButton.removeEventListener('click', onSuccessButtonClick);
   };
 
   var closeErrorWindow = function () {
     errorTemplate.remove();
     document.removeEventListener('keydown', onErrorEscPress);
+    errorButton.removeEventListener('click', onErrorButtonClick);
   };
 
   var onSuccessEscPress = function (evt) {
@@ -140,11 +142,13 @@
   var onSuccessButtonClick = function () {
     successTemplate.remove();
     successButton.removeEventListener('click', onSuccessButtonClick);
+    document.removeEventListener('keydown', onSuccessEscPress);
   };
 
   var onErrorButtonClick = function () {
     errorTemplate.remove();
     errorButton.removeEventListener('click', onErrorButtonClick);
+    document.removeEventListener('keydown', onErrorEscPress);
   };
 
   imgUploadButton.addEventListener('change', onUploadImageChange);

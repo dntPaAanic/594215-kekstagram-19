@@ -6,34 +6,33 @@
   var filterDefault = filtersList.querySelector('#filter-default');
   var filterRandom = filtersList.querySelector('#filter-random');
   var filterDiscussed = filtersList.querySelector('#filter-discussed');
-  var filterActive;
 
-  var addFiltersClickListeners = function () {
-    filtersButton.forEach(function (filterButton) {
-      // Меняет внешний вид кнопок
-      filterButton.addEventListener('click', function (evt) {
-        filterActive = filtersList.querySelector('.img-filters__button--active');
-        filterActive.classList.remove('img-filters__button--active');
-        evt.target.classList.add('img-filters__button--active');
-      });
+  var deleteClass = function () {
+    filtersButton.forEach(function (button) {
+      button.classList.remove('img-filters__button--active');
     });
   };
 
-  filterDefault.addEventListener('click', window.utils.debounce(function () {
+  filterDefault.addEventListener('click', window.utils.debounce(function (evt) {
     window.gallery.updateGallery(window.initialData);
+    deleteClass();
+    evt.target.classList.add('img-filters__button--active');
   }));
 
-  filterRandom.addEventListener('click', window.utils.debounce(function () {
+  filterRandom.addEventListener('click', window.utils.debounce(function (evt) {
     window.photoSorting.showRandomPhotos();
+    deleteClass();
+    evt.target.classList.add('img-filters__button--active');
   }));
 
-  filterDiscussed.addEventListener('click', window.utils.debounce(function () {
+  filterDiscussed.addEventListener('click', window.utils.debounce(function (evt) {
     window.photoSorting.showDiscussedPhotos();
+    deleteClass();
+    evt.target.classList.add('img-filters__button--active');
   }));
 
   var activateSortingFilters = function () {
     filtersList.classList.remove('img-filters--inactive');
-    addFiltersClickListeners();
   };
 
   window.sortingActivation = {
