@@ -4,14 +4,13 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var imgUploadForm = window.popupElements.imgUploadForm;
-  var imgUploadButton = window.popupElements.imgUploadButton;
-  var imgUploadOverlay = window.popupElements.imgUploadOverlay;
-  var closeEditButton = window.popupElements.closeEditButton;
-  var effectController = window.popupElements.effectController;
-  var fileChooser = window.popupElements.fileChooser;
-  var imgUploadPreview = window.popupElements.imgUploadPreview.children[0];
-
+  var imgUploadForm = document.querySelector('.img-upload__form');
+  var imgUploadButton = imgUploadForm.querySelector('#upload-file');
+  var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+  var closeEditButton = imgUploadForm.querySelector('#upload-cancel');
+  var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview').children[0];
+  var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
+  var fileChooser = imgUploadForm.querySelector('.img-upload__input');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var successButton = successTemplate.querySelector('.success__button');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');

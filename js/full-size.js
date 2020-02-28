@@ -6,6 +6,8 @@
   var MAX_DISPLAY_COMMENTS = 5;
 
   var fullSizePopup = document.querySelector('.big-picture');
+  var hashtagInput = document.querySelector('.text__hashtags');
+  var descriptionInput = document.querySelector('.text__description');
   var commentsCountBlock = fullSizePopup.querySelector('.social__comment-count');
   var fullSizeVisibleCommentsNumber = commentsCountBlock.querySelector('.comments-count-amount');
   var fullSizePhoto = fullSizePopup.querySelector('.big-picture__img').children[0];
@@ -16,8 +18,6 @@
   var fullSizeCloseButton = fullSizePopup.querySelector('.big-picture__cancel');
   var fullSizeCommentsList = fullSizePopup.querySelector('.social__comments');
   var fullSizeComment = fullSizeCommentsList.querySelector('.social__comment');
-  var hashtagInput = window.popupElements.hashtagInput;
-  var descriptionInput = window.popupElements.descriptionInput;
   var currentComments = [];
 
   // Собирает один комментарий
