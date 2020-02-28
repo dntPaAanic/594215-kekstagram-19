@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  // Масштаб изображения
   var RESIZE_STEP = 25;
   var IMAGE_MIN_SIZE = 25;
   var IMAGE_MAX_SIZE = 100;
@@ -10,7 +9,7 @@
   var scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
 
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
-  var imgUploadPreview = window.popupElements.imgUploadPreview;
+  var imgUploadPreview = document.querySelector('.img-upload__preview');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
   var scaleControlValue = document.querySelector('.scale__control--value');
 

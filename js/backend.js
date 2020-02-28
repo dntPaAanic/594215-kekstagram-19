@@ -1,8 +1,12 @@
 'use strict';
 
 (function () {
-  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
-  var URL_DOWNLOAD = 'https://js.dump.academy/kekstagram/data';
+
+  var Url = {
+    UPLOAD: 'https://js.dump.academy/kekstagram',
+    DOWNLOAD: 'https://js.dump.academy/kekstagram/data'
+  };
+
   var TIMEOUT = 10000;
 
   var Code = {
@@ -56,7 +60,7 @@
   // загружает данные на сервер
   var upload = function (data, onLoad, onError) {
     var xhr = setup(onLoad, onError);
-    xhr.open('POST', URL_UPLOAD);
+    xhr.open('POST', Url.UPLOAD);
     xhr.send(data);
   };
 
@@ -64,7 +68,7 @@
   var load = function (onLoad, onError) {
     var xhr = setup(onLoad, onError);
 
-    xhr.open('GET', URL_DOWNLOAD);
+    xhr.open('GET', Url.DOWNLOAD);
     xhr.send();
   };
 
