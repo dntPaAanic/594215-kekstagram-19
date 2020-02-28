@@ -20,14 +20,6 @@
   var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
   var imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
   var effectController = imgUploadOverlay.querySelector('.img-upload__effect-level');
-
-
-
-
-  // var imgUploadOverlay = window.popupElements.imgUploadOverlay;
-  // var imgUploadPreview = window.popupElements.imgUploadPreview;
-  // var effectController = window.popupElements.effectController;
-
   var effectLevelInput = effectController.querySelector('.effect-level__value');
   var effectLevelLine = effectController.querySelector('.effect-level__line');
   var effectLevelBar = effectController.querySelector('.effect-level__depth');
