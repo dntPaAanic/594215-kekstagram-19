@@ -54,8 +54,8 @@
     document.addEventListener('keydown', onEscPress);
     effectController.classList.add('hidden');
     window.scale.defaultScaleValue();
-    window.scale.scaleControlSmaller.addEventListener('click', window.scale.onSmallerControlPush);
-    window.scale.scaleControlBigger.addEventListener('click', window.scale.onBiggerControlPush);
+    window.scale.initSmallerControlListener();
+    window.scale.initBiggerControlListener();
   };
 
   // Закрывает окно редактирования фото
@@ -70,8 +70,8 @@
     window.fullSize.descriptionInput.value = '';
     document.removeEventListener('keydown', onEscPress);
     closeEditButton.removeEventListener('click', onCloseElementClick);
-    window.scale.scaleControlSmaller.removeEventListener('click', window.scale.onSmallerControlPush);
-    window.scale.scaleControlBigger.removeEventListener('click', window.scale.onBiggerControlPush);
+    window.scale.removeSmallerControlListener();
+    window.scale.removeBiggerControlListener();
   };
 
   var onUploadSuccess = function () {
