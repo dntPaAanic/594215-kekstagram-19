@@ -18,7 +18,7 @@
   var fullSizeCloseButton = fullSizePopup.querySelector('.big-picture__cancel');
   var fullSizeCommentsList = fullSizePopup.querySelector('.social__comments');
   var fullSizeComment = fullSizeCommentsList.querySelector('.social__comment');
-  var currentComments = [];
+  var currentComments;
 
   // Собирает один комментарий
   var getCommentBlock = function (comment) {
