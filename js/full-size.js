@@ -102,8 +102,8 @@
   });
 
   // Потеря фокуса полями ввода по нажатию Esc
-  window.utils.setFieldEscListener(hashtagInput);
-  window.utils.setFieldEscListener(descriptionInput);
+  window.utils.preventEsc(hashtagInput);
+  window.utils.preventEsc(descriptionInput);
 
   window.fullSize = {
     showFullSizePopup: showFullSizePopup,

@@ -7,6 +7,8 @@
   var MAX_BRIGHTNESS = 3;
   var MIN_BRIGHTNESS = 1;
   var DEFAULT_EFFECT_FILTER_LEVEL = 100;
+  var MIN_EFFECT_LEVEL = 0;
+  var MAX_EFFECT_LEVEL = 100;
 
   var Effect = {
     CHROME: 'chrome',
@@ -44,13 +46,13 @@
     var effectControllerWidth = effectControllerCoordinate.width;
 
     // Расчет положения пина в процентах
-    var pinCoord = evt.clientX - effectControllerMinPosition;
-    effectLevel = Math.round((pinCoord / effectControllerWidth) * 100);
+    var pinCoordinate = evt.clientX - effectControllerMinPosition;
+    effectLevel = Math.round((pinCoordinate / effectControllerWidth) * 100);
 
-    if (effectLevel < 0) {
-      effectLevel = 0;
-    } else if (effectLevel > 100) {
-      effectLevel = 100;
+    if (effectLevel < MIN_EFFECT_LEVEL) {
+      effectLevel = MIN_EFFECT_LEVEL;
+    } else if (effectLevel > MAX_EFFECT_LEVEL) {
+      effectLevel = MAX_EFFECT_LEVEL;
     }
   };
 
