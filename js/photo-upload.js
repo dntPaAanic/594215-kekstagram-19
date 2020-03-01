@@ -64,10 +64,10 @@
     imgUploadOverlay.classList.add('hidden');
     window.filters.resetFilter();
     imgUploadButton.value = '';
-    window.hashgtagValidation.hashtagInput.value = '';
-    window.hashgtagValidation.hashtagInput.style.border = 'none';
-    window.hashgtagValidation.hashtagInput.setCustomValidity('');
-    window.hashgtagValidation.descriptionInput.value = '';
+    window.fullSize.hashtagInput.value = '';
+    window.fullSize.hashtagInput.style.border = 'none';
+    window.fullSize.hashtagInput.setCustomValidity('');
+    window.fullSize.descriptionInput.value = '';
     document.removeEventListener('keydown', onEscPress);
     closeEditButton.removeEventListener('click', onCloseElementClick);
     window.scale.scaleControlSmaller.removeEventListener('click', window.scale.onSmallerControlPush);

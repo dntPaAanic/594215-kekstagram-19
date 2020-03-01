@@ -46,23 +46,22 @@
         });
       }
     }
-
-    // Ищем уникальные значения в массиве
-    var getUniqTags = function (tags) {
-      var results = [];
-
-      tags.forEach(function (value) {
-        value = value.trim();
-
-        if (results.indexOf(value) === -1) {
-          results.push(value);
-        }
-      });
-
-      return results;
-    };
-
     hashtagInput.setCustomValidity(getUniqTags(errorArray).join(', '));
+  };
+
+  // Ищем уникальные значения в массиве
+  var getUniqTags = function (tags) {
+    var results = [];
+
+    tags.forEach(function (value) {
+      value = value.trim();
+
+      if (results.indexOf(value) === -1) {
+        results.push(value);
+      }
+    });
+
+    return results;
   };
 
   hashtagInput.addEventListener('input', function () {
@@ -75,9 +74,4 @@
       invalidInput.style.border = '2px solid red';
     }
   });
-
-  window.hashgtagValidation = {
-    hashtagInput: hashtagInput,
-    descriptionInput: descriptionInput
-  };
 })();

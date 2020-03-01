@@ -42,12 +42,13 @@
     return fragment;
   };
 
-  // Показывает комментарии
   var loadComments = function (comments) {
     var startCommentsCount = fullSizeCommentsList.querySelectorAll('.social__comment').length;
     var commentsSection = comments.slice(startCommentsCount, startCommentsCount + MAX_DISPLAY_COMMENTS);
     fullSizeCommentsList.appendChild(getCommentList(commentsSection));
+  };
 
+  var checkCommentsLength = function (comments) {
     var totalCommentsCount = fullSizeCommentsList.querySelectorAll('.social__comment').length;
     if (totalCommentsCount === comments.length) {
       fullSizeCommentsLoader.classList.add('hidden');
@@ -59,10 +60,11 @@
 
   var onLoadCommentsClick = function () {
     loadComments(currentComments);
+    checkCommentsLength(currentComments);
   };
 
   // Подставляет данные для окна открытой фотокарточки
-  var setFullSizePopup = function (photo) {
+  var prepareFullSizePopup = function (photo) {
     fullSizePhoto.src = photo.url;
     fullSizePhoto.alt = photo.description;
     fullSizeLikes.textContent = photo.likes;
@@ -77,7 +79,7 @@
 
   // Показывает готовое полноразмерное изображение
   var showFullSizePopup = function (photoData) {
-    setFullSizePopup(photoData);
+    prepareFullSizePopup(photoData);
     document.addEventListener('keydown', onEscapePress);
     fullSizePopup.classList.remove('hidden');
     document.body.classList.add('modal-open');
@@ -105,7 +107,9 @@
 
   window.fullSize = {
     showFullSizePopup: showFullSizePopup,
-    fullSizePhoto: fullSizePhoto
+    fullSizePhoto: fullSizePhoto,
+    hashtagInput: hashtagInput,
+    descriptionInput: descriptionInput
   };
 
 })();
