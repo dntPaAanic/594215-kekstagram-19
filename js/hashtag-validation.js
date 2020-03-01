@@ -8,8 +8,6 @@
   var HASHTAG_MAX_LENGTH = 20;
 
   var hashtagInput = document.querySelector('.text__hashtags');
-  var descriptionInput = document.querySelector('.text__description');
-
   var imgUploadForm = document.querySelector('.img-upload__form');
   var submitFormButton = imgUploadForm.querySelector('#upload-submit');
 
