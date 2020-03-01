@@ -20,7 +20,8 @@
   var errorElement;
 
   var onUploadImageChange = function () {
-    if (imageUpload()) {
+    if (checkValidExtension()) {
+      changeImage();
       openEditForm();
     } else {
       formReset();
@@ -28,24 +29,22 @@
     }
   };
 
-  var imageUpload = function () {
+  var checkValidExtension = function () {
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
-    var matches = FILE_TYPES.some(function (type) {
+    return FILE_TYPES.some(function (type) {
       return fileName.endsWith(type);
     });
+  };
 
-    if (matches) {
-      var reader = new FileReader();
+  var changeImage = function () {
+    var reader = new FileReader();
 
-      reader.addEventListener('load', function () {
-        imgUploadPreview.src = reader.result;
-      });
+    reader.addEventListener('load', function () {
+      imgUploadPreview.src = reader.result;
+    });
 
-      reader.readAsDataURL(file);
-    }
-
-    return matches;
+    reader.readAsDataURL(fileChooser.files[0]);
   };
 
   // Открывает окно редактироания фото
