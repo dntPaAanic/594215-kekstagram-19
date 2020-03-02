@@ -74,6 +74,7 @@
     fullSizeCommentsLoader.classList.remove('hidden');
     currentComments = photo.comments;
     loadComments(currentComments);
+    checkCommentsLength(currentComments);
     fullSizeCommentsLoader.addEventListener('click', onLoadCommentsClick);
   };
 
