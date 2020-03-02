@@ -37,14 +37,29 @@
       scaleControlValue.value = scaleControlValueNumber + '%';
     }
     imgUploadPreview.children[0].style.transform = 'scale(' + scaleControlValueNumber / 100 + ')';
+  };
 
+  var initSmallerControlListener = function () {
+    scaleControlSmaller.addEventListener('click', onSmallerControlPush);
+  };
+
+  var initBiggerControlListener = function () {
+    scaleControlBigger.addEventListener('click', onBiggerControlPush);
+  };
+
+  var removeSmallerControlListener = function () {
+    scaleControlSmaller.removeEventListener('click', onSmallerControlPush);
+  };
+
+  var removeBiggerControlListener = function () {
+    scaleControlBigger.removeEventListener('click', onBiggerControlPush);
   };
 
   window.scale = {
     defaultScaleValue: defaultScaleValue,
-    onSmallerControlPush: onSmallerControlPush,
-    onBiggerControlPush: onBiggerControlPush,
-    scaleControlBigger: scaleControlBigger,
-    scaleControlSmaller: scaleControlSmaller
+    initSmallerControlListener: initSmallerControlListener,
+    initBiggerControlListener: initBiggerControlListener,
+    removeSmallerControlListener: removeSmallerControlListener,
+    removeBiggerControlListener: removeBiggerControlListener
   };
 })();

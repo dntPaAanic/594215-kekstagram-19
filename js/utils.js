@@ -36,12 +36,11 @@
     }
   };
 
-  // Потеря фокуса при нажании на Esc в текстовом поле
-  var setFieldEscListener = function (field) {
+  // Окно не закрывается при нажатии на Esc
+  var preventEsc = function (field) {
     field.addEventListener('keydown', function (evt) {
-      window.utils.isEscEvent(evt, function () {
+      isEscEvent(evt, function () {
         evt.stopPropagation();
-        evt.target.blur();
       });
     });
   };
@@ -63,7 +62,7 @@
     getRandomNumber: getRandomNumber,
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
-    setFieldEscListener: setFieldEscListener,
+    preventEsc: preventEsc,
     getRandomArray: getRandomArray,
     debounce: debounce,
   };

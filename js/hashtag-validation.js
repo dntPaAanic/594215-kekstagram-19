@@ -8,8 +8,6 @@
   var HASHTAG_MAX_LENGTH = 20;
 
   var hashtagInput = document.querySelector('.text__hashtags');
-  var descriptionInput = document.querySelector('.text__description');
-
   var imgUploadForm = document.querySelector('.img-upload__form');
   var submitFormButton = imgUploadForm.querySelector('#upload-submit');
 
@@ -46,23 +44,22 @@
         });
       }
     }
-
-    // Ищем уникальные значения в массиве
-    var getUniqTags = function (tags) {
-      var results = [];
-
-      tags.forEach(function (value) {
-        value = value.trim();
-
-        if (results.indexOf(value) === -1) {
-          results.push(value);
-        }
-      });
-
-      return results;
-    };
-
     hashtagInput.setCustomValidity(getUniqTags(errorArray).join(', '));
+  };
+
+  // Ищем уникальные значения в массиве
+  var getUniqTags = function (tags) {
+    var results = [];
+
+    tags.forEach(function (value) {
+      value = value.trim();
+
+      if (results.indexOf(value) === -1) {
+        results.push(value);
+      }
+    });
+
+    return results;
   };
 
   hashtagInput.addEventListener('input', function () {
@@ -75,9 +72,4 @@
       invalidInput.style.border = '2px solid red';
     }
   });
-
-  window.hashgtagValidation = {
-    hashtagInput: hashtagInput,
-    descriptionInput: descriptionInput
-  };
 })();
