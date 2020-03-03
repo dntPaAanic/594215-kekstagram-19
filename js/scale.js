@@ -2,11 +2,14 @@
 
 (function () {
   var RESIZE_STEP = 25;
-  var IMAGE_MIN_SIZE = 25;
-  var IMAGE_MAX_SIZE = 100;
-  var IMAGE_DEFAULT_SIZE = 100;
 
-  var scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
+  var ImageSize = {
+    MIN: 25,
+    MAX: 100,
+    DEFAULT: 100
+  };
+
+  var scaleControlValueNumber = ImageSize.DEFAULT;
 
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var imgUploadPreview = document.querySelector('.img-upload__preview');
@@ -16,14 +19,14 @@
 
   // Показываем дефолтный масштаб при открытии формы редактирования фото
   var defaultScaleValue = function () {
-    scaleControlValue.value = IMAGE_DEFAULT_SIZE + '%';
-    imgUploadPreview.children[0].style.transform = 'scale(' + IMAGE_DEFAULT_SIZE / 100 + ')';
-    scaleControlValueNumber = IMAGE_DEFAULT_SIZE;
+    scaleControlValue.value = ImageSize.DEFAULT + '%';
+    imgUploadPreview.children[0].style.transform = 'scale(' + ImageSize.DEFAULT / 100 + ')';
+    scaleControlValueNumber = ImageSize.DEFAULT;
   };
 
   // Расчет уменьшения масштаба изображения
   var onSmallerControlPush = function () {
-    if (scaleControlValueNumber > IMAGE_MIN_SIZE && scaleControlValueNumber <= IMAGE_MAX_SIZE) {
+    if (scaleControlValueNumber > ImageSize.MIN && scaleControlValueNumber <= ImageSize.MAX) {
       scaleControlValueNumber -= RESIZE_STEP;
       scaleControlValue.value = scaleControlValueNumber + '%';
     }
@@ -32,7 +35,7 @@
 
   // Расчет увеличения масштаба изображения
   var onBiggerControlPush = function () {
-    if (scaleControlValueNumber >= IMAGE_MIN_SIZE && scaleControlValueNumber < IMAGE_MAX_SIZE) {
+    if (scaleControlValueNumber >= ImageSize.MIN && scaleControlValueNumber < ImageSize.MAX) {
       scaleControlValueNumber += RESIZE_STEP;
       scaleControlValue.value = scaleControlValueNumber + '%';
     }

@@ -4,16 +4,16 @@
 
 (function () {
   var MAX_BLUR = 3;
-  var DEFAULT_EFFECT_FILTER_LEVEL = 100;
 
   var Brightness = {
     MIN: 0,
-    MAX: 3
+    MAX: 3,
   };
 
   var EffectLevel = {
     MIN: 0,
-    MAX: 100
+    MAX: 100,
+    DEFAULT: 100
   };
 
   var Effect = {
@@ -115,7 +115,7 @@
     resetFilter();
     currentFilter = getCurrentFilter();
     toggleEffectVisibility(currentFilter);
-    setEffectLevel(DEFAULT_EFFECT_FILTER_LEVEL);
+    setEffectLevel(EffectLevel.DEFAULT);
     applyFilter(currentFilter);
   };
 
