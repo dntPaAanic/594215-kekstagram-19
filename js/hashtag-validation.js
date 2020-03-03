@@ -6,7 +6,7 @@
   var HASHTAG_LIMIT = 5;
   var HASHTAG_MIN_LENGTH = 2;
   var HASHTAG_MAX_LENGTH = 20;
-  var REGULAR_EXPRESSION = /^#[\wа-яА-я]+/;
+  var REGULAR_EXPRESSION = /^#[0-9a-zA-Zа-яА-Я]+$/;
 
   var hashtagInput = document.querySelector('.text__hashtags');
   var imgUploadForm = document.querySelector('.img-upload__form');
