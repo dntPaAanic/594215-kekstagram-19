@@ -20,7 +20,7 @@
   var errorElement;
 
   var onUploadImageChange = function () {
-    if (checkValidExtension()) {
+    if (isValidExtension()) {
       changeImage();
       openEditForm();
     } else {
@@ -29,7 +29,7 @@
     }
   };
 
-  var checkValidExtension = function () {
+  var isValidExtension = function () {
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
     return FILE_TYPES.some(function (type) {
@@ -54,8 +54,7 @@
     document.addEventListener('keydown', onEscPress);
     effectController.classList.add('hidden');
     window.scale.defaultScaleValue();
-    window.scale.initSmallerControlListener();
-    window.scale.initBiggerControlListener();
+    window.scale.initControlListeners();
   };
 
   // Закрывает окно редактирования фото
@@ -70,8 +69,7 @@
     window.fullSize.descriptionInput.value = '';
     document.removeEventListener('keydown', onEscPress);
     closeEditButton.removeEventListener('click', onCloseElementClick);
-    window.scale.removeSmallerControlListener();
-    window.scale.removeBiggerControlListener();
+    window.scale.removeControlListeners();
   };
 
   var onUploadSuccess = function () {

@@ -4,11 +4,17 @@
 
 (function () {
   var MAX_BLUR = 3;
-  var MAX_BRIGHTNESS = 3;
-  var MIN_BRIGHTNESS = 1;
   var DEFAULT_EFFECT_FILTER_LEVEL = 100;
-  var MIN_EFFECT_LEVEL = 0;
-  var MAX_EFFECT_LEVEL = 100;
+
+  var Brightness = {
+    MIN: 0,
+    MAX: 3
+  };
+
+  var EffectLevel = {
+    MIN: 0,
+    MAX: 100
+  };
 
   var Effect = {
     CHROME: 'chrome',
@@ -49,10 +55,10 @@
     var pinCoordinate = evt.clientX - effectControllerMinPosition;
     effectLevel = Math.round((pinCoordinate / effectControllerWidth) * 100);
 
-    if (effectLevel < MIN_EFFECT_LEVEL) {
-      effectLevel = MIN_EFFECT_LEVEL;
-    } else if (effectLevel > MAX_EFFECT_LEVEL) {
-      effectLevel = MAX_EFFECT_LEVEL;
+    if (effectLevel < EffectLevel.MIN) {
+      effectLevel = EffectLevel.MIN;
+    } else if (effectLevel > EffectLevel.MAX) {
+      effectLevel = EffectLevel.MAX;
     }
   };
 
@@ -90,7 +96,7 @@
         filterEffect = 'blur(' + (level / 100 * MAX_BLUR) + 'px)';
         break;
       case Effect.HEAT:
-        filterEffect = 'brightness(' + (MIN_BRIGHTNESS + level / 100 * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + ')';
+        filterEffect = 'brightness(' + (Brightness.MIN + level / 100 * (Brightness.MAX - Brightness.MIN)) + ')';
         break;
       default:
         filterEffect = 'none';
