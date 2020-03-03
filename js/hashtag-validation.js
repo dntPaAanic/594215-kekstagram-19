@@ -6,6 +6,7 @@
   var HASHTAG_LIMIT = 5;
   var HASHTAG_MIN_LENGTH = 2;
   var HASHTAG_MAX_LENGTH = 20;
+  var REGULAR_EXPRESSION = /^#[\wа-яА-я]+/;
 
   var hashtagInput = document.querySelector('.text__hashtags');
   var imgUploadForm = document.querySelector('.img-upload__form');
@@ -38,8 +39,8 @@
             return item === currentHashtag;
           })) {
             errorArray.push('Один и тот же хэш-тег не может быть использован дважды');
-          } else if (!currentHashtag.match(/^#[\wа-яА-я]+/)) {
-            errorArray.push('строка после решётки должна состоять из букв и чисел и не может содержать спецсимволы, символы пунктуации, эмодзи');
+          } else if (!currentHashtag.match(REGULAR_EXPRESSION)) {
+            errorArray.push('Строка после решётки должна состоять из букв и чисел и не может содержать спецсимволы, символы пунктуации, эмодзи');
           }
         });
       }

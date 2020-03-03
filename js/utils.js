@@ -4,10 +4,6 @@
   var ESC_KEY = 'Escape';
   var DEBOUNCE_INTERVAL = 500;
 
-  var getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
   // Получает случайное значение из массива
   var getRandomArrElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -59,7 +55,6 @@
   };
 
   window.utils = {
-    getRandomNumber: getRandomNumber,
     getRandomArrElement: getRandomArrElement,
     isEscEvent: isEscEvent,
     preventEsc: preventEsc,

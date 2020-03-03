@@ -4,6 +4,7 @@
 
 (function () {
   var MAX_BLUR = 3;
+  var MAX_PERCENT_VALUE = 100;
 
   var Brightness = {
     MIN: 0,
@@ -84,19 +85,19 @@
 
     switch (filter) {
       case Effect.CHROME:
-        filterEffect = 'grayscale(' + level / 100 + ')';
+        filterEffect = 'grayscale(' + level / MAX_PERCENT_VALUE + ')';
         break;
       case Effect.SEPIA:
-        filterEffect = 'sepia(' + level / 100 + ')';
+        filterEffect = 'sepia(' + level / MAX_PERCENT_VALUE + ')';
         break;
       case Effect.MARVIN:
         filterEffect = 'invert(' + level + '%)';
         break;
       case Effect.PHOBOS:
-        filterEffect = 'blur(' + (level / 100 * MAX_BLUR) + 'px)';
+        filterEffect = 'blur(' + (level / MAX_PERCENT_VALUE * MAX_BLUR) + 'px)';
         break;
       case Effect.HEAT:
-        filterEffect = 'brightness(' + (Brightness.MIN + level / 100 * (Brightness.MAX - Brightness.MIN)) + ')';
+        filterEffect = 'brightness(' + (Brightness.MIN + level / MAX_PERCENT_VALUE * (Brightness.MAX - Brightness.MIN)) + ')';
         break;
       default:
         filterEffect = 'none';
